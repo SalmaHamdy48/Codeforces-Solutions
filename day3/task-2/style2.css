@@ -1,0 +1,49 @@
+
+
+
+.container{
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+    width: 80%;
+    max-width: 1000px;
+}
+
+.shape{
+    background-image: url('../Pictures/Screenshots/grid.png.jpeg');
+    background-size: 150%;
+    background-position: center;
+    display: flex;
+    justify-content: start;
+    align-items: start;
+    padding: 10px;
+    font-size: 18px;
+    border: 1px solid #ccc;
+    color: white;
+}
+
+.s1{
+    width: 60%;
+    height: 200px;
+}
+
+.s2{
+    width: 40%;
+    height: 280px;
+}
+
+.s3{
+    width: 400px;
+    height: 150px;
+}
+
+.s4{
+    width: 100%;
+    height: 100%;
+}
+
+.background{
+    background-color: #ccc;
+    width: 500px;
+    height: 300px;
+}
