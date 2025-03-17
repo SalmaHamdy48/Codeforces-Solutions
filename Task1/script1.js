@@ -9,7 +9,7 @@ button.addEventListener("click", function (event) {
   const output = document.getElementById("output");
 
   
-
+  output.innerHTML = "";
 
   
   for (let i = 0; i < number; i++) {
