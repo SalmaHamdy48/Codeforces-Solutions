@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="new-style.css">
+    <title>New Movie Online Website</title>
+</head>
+<body>
+    <header class="container">
+        <div class="inside">
+            <nav class="nav-bar">
+                <div class="logo"><span class="new">NEW</span><span class="movie"> MOVIE</span></div>
+                <ul class="nav-list">
+                    <li class="first-element">New Movie</li>
+                    <li>Genre</li>
+                    <li>Country</li>
+                    <li>Movie</li>
+                    <li>TV Series</li>
+                    <div class="before-search"></div>
+                    <li class="search-icon" id="search-icon">
+                        <i class="fas fa-search"></i>
+                    </li>
+                    <li class="search-container">
+                        <input type="text" id="search-input" placeholder="Search movies...">
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <div class="main">
+        <div class="overlay">
+            <div class="content">
+                <div class="text">
+                    <h2 class="film-category" id="movie-title">Spider man</h2>
+                    <h2 class="flim-name"><strong>No Way Home</strong></h2>
+                    <div class="lines">
+                        <span class="IMDb">IMDb</span>
+                        <span class="rate" id="vote_average">8.2</span>
+                        <span class="viewers" id="popularity">(12,827)</span>
+                        <span class="dot"></span>
+                        <span class="year" id="release_date">2021</span>
+                        <span class="line"></span>
+                        <span class="time">1 hour 55 minutes</span>
+                        <span class="line"></span>
+                        <span class="Sci-fi">Sci-fi</span>
+                    </div>
+                
+                    <div class="description" id="movie-description">
+                        Scelerisque sed ultricies tristique. Mi in vivamus aliquam varius eu felis.
+                        Id ultricies diam turpis mi tincidunt. Ut morbi sed urna tempor imperdiet
+                        eu scelerisque egestas. Interdum mi orci suspendisse in s... <span class="see-more">See more</span>
+                    </div>
+                    <div class="action-buttons">
+                        <span class="watch-trailer">
+                            Watch trailer
+                        </span>
+                        <span class="watch-now">
+                            <i class="fas fa-play play-icon"></i>
+                            Watch now
+                        </span>
+                    </div>
+
+                    <div class="arrows">
+                        <button class="previous">&lt;</button>
+                        <button class="next">&gt;</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div id="movies-list" class="scroll-list"></div>
+    
+    <script type="module" src="dist/dommain.js"></script>
+</body>
+</html>
