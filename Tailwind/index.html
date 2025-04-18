@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <title>Design Engineering as a Service</title>
+  <script>
+    function toggleMenu() {
+      const menu = document.getElementById('mobile-menu');
+      menu.classList.toggle('hidden');
+    }
+  </script>
+</head>
+<body class="bg-gradient-to-r from-black to-purple-500 min-h-screen">
+
+  <header class="px-6 md:px-12 py-6">
+    <div class="flex justify-between items-center">
+      <div class="text-3xl font-extrabold md:pl-44 text-white">Logo</div>
+      
+      <div class="hidden md:block">
+        <nav class="bg-gray-900 rounded-full px-4 py-2 flex items-center space-x-6 text-slate-300 text-sm">
+          <a href="#">About</a>
+          <a href="#">Process</a>
+          <a href="#">Work</a>
+          <a href="#">Pricing</a>
+          <span>|</span>
+          <a href="#" class="text-violet-300">EN</a>
+          <span>|</span>
+          <a href="#" class="ml-4 bg-violet-600 hover:bg-violet-700 text-white py-2 px-4 rounded-full text-sm">Get Started ></a>
+        </nav>
+      </div>
+      
+      <button class="md:hidden text-white focus:outline-none" onclick="toggleMenu()">
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+        </svg>
+      </button>
+    </div>
+    
+    <div id="mobile-menu" class="hidden md:hidden mt-4">
+      <nav class="bg-gray-900 rounded-lg px-4 py-2 flex flex-col space-y-3 text-slate-300 text-sm">
+        <a href="#" class="py-2 px-4 hover:bg-gray-800 rounded">About</a>
+        <a href="#" class="py-2 px-4 hover:bg-gray-800 rounded">Process</a>
+        <a href="#" class="py-2 px-4 hover:bg-gray-800 rounded">Work</a>
+        <a href="#" class="py-2 px-4 hover:bg-gray-800 rounded">Pricing</a>
+        <div class="flex items-center py-2 px-4">
+          <a href="#" class="text-violet-300">EN</a>
+        </div>
+        <a href="#" class="bg-violet-600 hover:bg-violet-700 text-white py-2 px-4 rounded-full text-center">Get Started ></a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="px-6 md:px-8 mt-16 md:mt-24 max-w-6xl mx-auto">
+    <p class="text-violet-600 text-base md:text-lg font-bold mb-2">DESIGN ENGINEERING AS A SERVICE<span class="text-gray-600 px-8">///</span></p>
+
+    <h1 class="text-3xl md:text-5xl font-extrabold mb-10 text-white leading-tight">
+      Make people fall in love <br />
+      with your SaaS product
+    </h1>
+
+    <p class="text-base md:text-lg text-slate-200 mb-10">
+      The first-ever <span class="font-bold">design engineering subscription for SaaS</span> companies. <br />
+      Thoughtfully crafting compelling sites your visitors won't want to leave.
+    </p>
+
+    <div class="flex flex-col sm:flex-row items-center gap-4 mb-10">
+      <a href="#" class="bg-violet-600 hover:bg-violet-700 text-white py-2 px-6 rounded-full text-sm font-semibold text-center w-full sm:w-auto">Get Started<span> ></span></a>
+      <a href="#" class="bg-gray-800 hover:bg-gray-700 text-white py-2 px-6 rounded-full text-sm font-semibold text-center w-full sm:w-auto">Schedule a Call<span> ></span></a>
+    </div>
+
+    <div class="flex flex-col sm:flex-row items-start sm:items-center space-y-4 sm:space-y-0 sm:space-x-3">
+      <div class="flex -space-x-2">
+        <img src="https://lw.works/_next/image?url=%2Fimages%2Favatars%2Fjonathan-markwell.jpg&w=828&q=75" class="w-10 h-10 rounded-full border-2 border-white" />
+        <img src="https://lw.works/_next/image?url=%2Fimages%2Favatars%2Fjohannes-schickling.jpg&w=828&q=75" class="w-10 h-10 rounded-full border-2 border-white" />
+        <img src="https://lw.works/_next/image?url=%2Fimages%2Favatars%2Fsean-c-davis.jpg&w=828&q=75" class="w-10 h-10 rounded-full border-2 border-white" />
+        <div class="px-3 text-white">+12</div>
+      </div>
+      <div class="text-sm">
+        <span class="text-slate-300">Trusted by great builders like</span><br />
+        <span class="font-semibold text-white">Johannes Schickling</span>
+      </div>
+    </div>
+  </main>
+
+</body>
+</html>
