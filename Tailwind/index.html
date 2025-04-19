@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <title>Design Engineering as a Service</title>
+  <script>
+    function toggleMenu() {
+      const menu = document.getElementById('mobile-menu');
+      menu.classList.toggle('hidden');
+    }
+  </script>
+  <style>
+    .bg-custom {
+      background-image: url('https://lw.works/_next/image?url=%2Fimages%2Fbackground-dark.jpg&w=3840&q=75');
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      background-attachment: fixed;
+    }
+  </style>
+</head>
+<body class="min-h-screen">
+
+  <!-- Background container -->
+  <div class="bg-custom min-h-screen">
+    <div class="max-w-7xl mx-auto px-8 md:px-16 lg:px-20">
+      
+      <header class="relative py-6">
+        <div class="flex justify-between items-center">
+          <!-- Logo aligned with main content -->
+          <div class="text-3xl font-extrabold text-white ml-4 md:ml-0">Logo</div>
+          
+          <!-- Desktop Navigation -->
+          <div class="hidden md:block">
+            <nav class="bg-gray-900/80 rounded-full px-4 py-2 flex items-center space-x-6 text-slate-300 text-sm">
+              <a href="#" class="hover:text-white transition-colors font-bold text-base">About</a>
+              <a href="#" class="hover:text-white transition-colors font-bold text-base">Process</a>
+              <a href="#" class="hover:text-white transition-colors font-bold text-base">Work</a>
+              <a href="#" class="hover:text-white transition-colors font-bold text-base">Pricing</a>
+              <span class="text-gray-400">|</span>
+              <a href="#" class="text-violet-300 hover:text-violet-200">EN</a>
+              <span class="text-gray-400">|</span>
+              <a href="#" class="ml-4 bg-violet-600 hover:bg-violet-700 text-white py-2 px-4 rounded-full text-sm flex items-center transition-colors">
+                Get Started
+                <svg viewBox="0 0 24 24" class="w-4 h-4 ml-1 stroke-2 fill-none stroke-current">
+                  <polyline points="9 18 15 12 9 6" />
+                </svg>
+              </a>
+            </nav>
+          </div>
+          
+          <!-- Mobile menu button -->
+          <button class="md:hidden text-white focus:outline-none" onclick="toggleMenu()">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+            </svg>
+          </button>
+        </div>
+        
+        <!-- Mobile Navigation -->
+        <div id="mobile-menu" class="hidden md:hidden mt-4">
+          <nav class="bg-gray-900/90 rounded-lg px-4 py-2 flex flex-col space-y-3 text-slate-300 text-sm">
+            <a href="#" class="py-2 px-4 hover:bg-gray-800 rounded transition-colors">Process</a>
+            <a href="#" class="py-2 px-4 hover:bg-gray-800 rounded transition-colors">Work</a>
+            <a href="#" class="py-2 px-4 hover:bg-gray-800 rounded transition-colors">Pricing</a>
+            <div class="flex items-center py-2 px-4">
+              <a href="#" class="text-violet-300">EN</a>
+            </div>
+            <a href="#" class="bg-violet-600 hover:bg-violet-700 text-white py-2 px-4 rounded-full text-center flex items-center justify-center transition-colors">
+              Get Started
+              <svg viewBox="0 0 24 24" class="w-4 h-4 ml-1 stroke-2 fill-none stroke-current">
+                <polyline points="9 18 15 12 9 6" />
+              </svg>
+            </a>
+          </nav>
+        </div>
+      </header>
+
+      <main class="mt-16 md:mt-24 pb-16 ml-4 md:ml-0">
+        <p class="text-violet-600 text-base md:text-lg font-bold mb-2 flex items-center">
+          DESIGN ENGINEERING AS A SERVICE
+          <span class="text-gray-600 px-4 md:px-8">///</span>
+        </p>
+
+        <h1 class="text-4xl md:text-5xl lg:text-5xl font-extrabold mb-6 text-white">
+          Make people fall in love <br class="hidden sm:block" />
+          with your SaaS product
+        </h1>
+
+        <div class="max-w-2xl">
+          <p class="text-lg md:text-xl text-slate-200 mb-4">
+            The first-ever <span class="font-bold">design engineering subscription for SaaS</span> companies.
+          </p>
+          <p class="text-lg md:text-xl text-slate-200">
+            Thoughtfully crafting compelling sites your visitors won't want to leave.
+          </p>
+        </div>
+
+        <div class="flex flex-col sm:flex-row items-center gap-4 mt-10 mb-10">
+          <a href="#" class="bg-violet-600 hover:bg-violet-700 text-white py-3 px-6 rounded-full text-sm font-semibold text-center w-full sm:w-auto flex items-center justify-center transition-colors">
+            Get Started
+            <svg viewBox="0 0 24 24" class="w-4 h-4 ml-1 stroke-2 fill-none stroke-current">
+              <polyline points="9 18 15 12 9 6" />
+            </svg>
+          </a>
+          <a href="#" class="bg-gray-800 hover:bg-gray-700 text-white py-3 px-6 rounded-full text-sm font-semibold text-center w-full sm:w-auto flex items-center justify-center transition-colors">
+            Schedule a Call
+            <svg viewBox="0 0 24 24" class="w-4 h-4 ml-1 stroke-2 fill-none stroke-current">
+              <polyline points="9 18 15 12 9 6" />
+            </svg>
+          </a>
+        </div>
+
+        <div class="flex flex-col sm:flex-row items-center sm:items-start gap-4">
+          <div class="flex -space-x-2">
+            <img src="https://lw.works/_next/image?url=%2Fimages%2Favatars%2Fjonathan-markwell.jpg&w=828&q=75" class="w-10 h-10 rounded-full border-2 border-white" />
+            <img src="https://lw.works/_next/image?url=%2Fimages%2Favatars%2Fjohannes-schickling.jpg&w=828&q=75" class="w-10 h-10 rounded-full border-2 border-white" />
+            <img src="https://lw.works/_next/image?url=%2Fimages%2Favatars%2Fsean-c-davis.jpg&w=828&q=75" class="w-10 h-10 rounded-full border-2 border-white" />
+            <div class="flex items-center justify-center w-10 h-10 rounded-full bg-gray-700 border-2 border-white text-xs text-white">+12</div>
+          </div>
+          <div class="text-sm">
+            <span class="text-slate-300">Trusted by great builders like</span><br />
+            <span class="font-semibold text-white">Johannes Schickling</span>
+          </div>
+        </div>
+      </main>
+    </div>
+  </div>
+
+</body>
+</html>
