@@ -1,0 +1,94 @@
+.header-container {
+  flex-grow: 1;
+}
+
+.app-bar {
+  background-color: #ffffff !important;
+  border-bottom: 1px solid #e0e0e0;
+  color: #333 !important;
+}
+
+.toolbar {
+  display: flex;
+  justify-content: space-between;
+  padding: 0 24px !important;
+}
+
+.breadcrumbs {
+  display: flex;
+  align-items: center;
+}
+
+.breadcrumb-link, .breadcrumb-current {
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+}
+
+.breadcrumb-icon {
+  margin-right: 8px;
+  font-size: 18px !important;
+  color: #666;
+}
+
+.icons-container {
+  display: flex;
+  align-items: center;
+}
+
+.icon-button {
+  color: #666 !important;
+  margin: 0 4px !important;
+}
+
+.dropdown-menu {
+  margin-top: 45px !important;
+}
+
+.menu-title {
+  padding: 12px 16px 8px;
+  font-weight: 600 !important;
+  border-bottom: 1px solid #eee;
+  margin-bottom: 4px;
+}
+
+.menu-item {
+  min-width: 250px;
+  padding: 8px 16px !important;
+}
+
+.notification-content, .message-content {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.message-content {
+  flex-direction: row;
+  align-items: center;
+}
+
+.sender-name {
+  font-weight: 600 !important;
+}
+
+.message-text {
+  color: #666 !important;
+  white-space: normal !important;
+}
+
+.time-text {
+  color: #999 !important;
+  margin-top: 4px !important;
+}
+
+.flag-code {
+  font-weight: bold;
+  color: #1976d2;
+  margin-right: 12px;
+}
+
+.user-avatar {
+  cursor: pointer;
+  background-color: #1976d2 !important;
+}
