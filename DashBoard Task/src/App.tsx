@@ -1,3 +1,4 @@
+// App.tsx
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -21,7 +22,7 @@ const theme = createTheme({
     },
     divider: '#E5E7EB',
     action: {
-      selected: '#E5E7EB',
+      selected: 'rgba(25, 118, 210, 0.08)',
       hover: '#F3F4F6'
     }
   },
@@ -39,6 +40,14 @@ const theme = createTheme({
       styleOverrides: {
         root: {
           borderBottomColor: '#E5E7EB'
+        }
+      }
+    },
+    MuiDrawer: {
+      styleOverrides: {
+        paper: {
+          borderRight: 'none',
+          boxShadow: '0 1px 2px 0 rgba(0, 0, 0, 0.05)'
         }
       }
     }

@@ -1,3 +1,4 @@
+// services/api.ts
 import axios from 'axios';
 
 interface Name {
@@ -36,7 +37,7 @@ export interface TeamMember {
   avatar: string;
 }
 
-const positions = ['Graphics Designer', 'Joomla Developer', 'Human Resource', 'PHP Developer', 'ULUX Designer', 'UX Architect', 'Python Developer', 'Freshers'];
+const positions = ['Graphics Designer', 'Joomla Developer', 'Human Resource', 'PHP Developer', 'UI UX Designer', 'UX Architect', 'Python Developer', 'Freakers'];
 const departments = ['Sales Team', 'Finances', 'Management', 'Engineering', 'Human Resources', 'Customer Success', 'Marketing', 'Product'];
 
 export const fetchTeamMembers = async (page: number, results: number): Promise<TeamMember[]> => {
@@ -50,11 +51,11 @@ export const fetchTeamMembers = async (page: number, results: number): Promise<T
       email: user.email,
       phone: user.phone,
       status: Math.random() > 0.5 ? 'Full Time' : 'Part Time',
-      officeLocation: '2022 Westheimer Rd. Santa Ana, Illinois 85466',
-      teamMates: ['Ronald Richards', 'Floyd Miles', 'Savannah Nguyen'],
-      birthday: '12/07/198',
+      officeLocation: '2972 Westheimer Rd, Santa Ana, Illinois 85486',
+      teamMates: ['Ronald Richards', 'Royal Miles', 'Savannah Nguyen'],
+      birthday: '7/27/1998',
       hireYear: '4 Years',
-      address: '410 Parker Rd. Allentown, New Mexico 31134',
+      address: '4140 Parker Rd, Abertown, New Mexico 31134',
       avatar: user.picture.thumbnail
     }));
   } catch (error) {

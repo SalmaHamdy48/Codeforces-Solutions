@@ -1,3 +1,4 @@
+// components/Header.tsx
 import React, { useState } from 'react';
 import { 
   AppBar, 
@@ -19,7 +20,6 @@ import {
   Home as HomeIcon,
   People as PeopleIcon
 } from '@mui/icons-material';
-import './Header.css';
 
 interface FlagOption {
   code: string;
@@ -86,27 +86,35 @@ const Header: React.FC = () => {
   };
 
   return (
-    <Box className="header-container">
-      <AppBar position="static" color="default" elevation={0} className="app-bar">
-        <Toolbar className="toolbar">
+    <Box>
+      <AppBar 
+        position="static" 
+        color="default" 
+        elevation={0} 
+        sx={{ 
+          backgroundColor: 'white',
+          borderBottom: '1px solid #E5E7EB'
+        }}
+      >
+        <Toolbar sx={{ justifyContent: 'space-between', paddingX: 3 }}>
           {/* Breadcrumb navigation */}
-          <Breadcrumbs aria-label="breadcrumb" className="breadcrumbs">
+          <Breadcrumbs aria-label="breadcrumb">
             <Link
               underline="hover"
               color="inherit"
               href="#"
-              className="breadcrumb-link"
+              sx={{ display: 'flex', alignItems: 'center' }}
             >
-              <HomeIcon className="breadcrumb-icon" />
+              <HomeIcon sx={{ mr: 0.5, fontSize: 20 }} />
               <Typography variant="body1" component="span">
                 Admin Dashboard
               </Typography>
             </Link>
             <Typography
               color="text.primary"
-              className="breadcrumb-current"
+              sx={{ display: 'flex', alignItems: 'center' }}
             >
-              <PeopleIcon className="breadcrumb-icon" />
+              <PeopleIcon sx={{ mr: 0.5, fontSize: 20 }} />
               <Typography variant="body1" component="span">
                 Team List
               </Typography>
@@ -114,12 +122,13 @@ const Header: React.FC = () => {
           </Breadcrumbs>
 
           {/* Icons section */}
-          <Box className="icons-container">
+          <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
             {/* Flag dropdown */}
             <IconButton
               aria-label="language"
               onClick={handleFlagClick}
-              className="icon-button"
+              size="small"
+              sx={{ color: 'text.secondary' }}
             >
               <FlagIcon />
             </IconButton>
@@ -127,16 +136,22 @@ const Header: React.FC = () => {
               anchorEl={flagAnchorEl}
               open={flagOpen}
               onClose={handleClose}
-              className="dropdown-menu"
+              PaperProps={{
+                sx: {
+                  mt: 1.5,
+                  minWidth: 180,
+                  boxShadow: '0 1px 3px 0 rgba(0, 0, 0, 0.1)',
+                  '& .MuiMenuItem-root': {
+                    fontSize: 14,
+                    padding: '8px 16px'
+                  }
+                }
+              }}
             >
               {flags.map((flag) => (
-                <MenuItem 
-                  key={flag.code} 
-                  onClick={handleClose}
-                  className="menu-item"
-                >
-                  <span className="flag-code">{flag.code.toUpperCase()}</span>
-                  <span className="flag-name">{flag.name}</span>
+                <MenuItem key={flag.code} onClick={handleClose}>
+                  <span style={{ fontWeight: 500, marginRight: 8 }}>{flag.code.toUpperCase()}</span>
+                  <span>{flag.name}</span>
                 </MenuItem>
               ))}
             </Menu>
@@ -145,7 +160,8 @@ const Header: React.FC = () => {
             <IconButton
               aria-label="notifications"
               onClick={handleNotifClick}
-              className="icon-button"
+              size="small"
+              sx={{ color: 'text.secondary' }}
             >
               <Badge badgeContent={3} color="error">
                 <NotificationsIcon />
@@ -155,19 +171,28 @@ const Header: React.FC = () => {
               anchorEl={notifAnchorEl}
               open={notifOpen}
               onClose={handleClose}
-              className="dropdown-menu notification-menu"
+              PaperProps={{
+                sx: {
+                  mt: 1.5,
+                  width: 320,
+                  boxShadow: '0 1px 3px 0 rgba(0, 0, 0, 0.1)',
+                  '& .MuiMenuItem-root': {
+                    padding: '8px 16px'
+                  }
+                }
+              }}
             >
-              <Typography variant="subtitle1" className="menu-title">
+              <Typography variant="subtitle1" sx={{ padding: '8px 16px', fontWeight: 600 }}>
                 Notifications
               </Typography>
               {notifications.map((notif) => (
-                <MenuItem key={notif.id} onClick={handleClose} className="menu-item">
-                  <div className="notification-content">
+                <MenuItem key={notif.id} onClick={handleClose}>
+                  <Box>
                     <Typography variant="body2">{notif.text}</Typography>
-                    <Typography variant="caption" className="time-text">
+                    <Typography variant="caption" sx={{ color: 'text.secondary', fontSize: 12 }}>
                       {notif.time}
                     </Typography>
-                  </div>
+                  </Box>
                 </MenuItem>
               ))}
             </Menu>
@@ -176,7 +201,8 @@ const Header: React.FC = () => {
             <IconButton
               aria-label="messages"
               onClick={handleMessageClick}
-              className="icon-button"
+              size="small"
+              sx={{ color: 'text.secondary' }}
             >
               <Badge badgeContent={2} color="error">
                 <EmailIcon />
@@ -186,38 +212,46 @@ const Header: React.FC = () => {
               anchorEl={messageAnchorEl}
               open={messageOpen}
               onClose={handleClose}
-              className="dropdown-menu message-menu"
+              PaperProps={{
+                sx: {
+                  mt: 1.5,
+                  width: 320,
+                  boxShadow: '0 1px 3px 0 rgba(0, 0, 0, 0.1)',
+                  '& .MuiMenuItem-root': {
+                    padding: '12px 16px'
+                  }
+                }
+              }}
             >
-              <Typography variant="subtitle1" className="menu-title">
+              <Typography variant="subtitle1" sx={{ padding: '8px 16px', fontWeight: 600 }}>
                 Messages
               </Typography>
               {messages.map((msg) => (
-                <MenuItem key={msg.id} onClick={handleClose} className="menu-item">
-                  <div className="message-content">
+                <MenuItem key={msg.id} onClick={handleClose}>
+                  <Box sx={{ display: 'flex', alignItems: 'center' }}>
                     <Avatar sx={{ width: 32, height: 32, mr: 2 }}>
                       {msg.sender.charAt(0)}
                     </Avatar>
-                    <div>
-                      <Typography variant="body2" className="sender-name">
+                    <Box>
+                      <Typography variant="body2" sx={{ fontWeight: 500 }}>
                         {msg.sender}
                       </Typography>
-                      <Typography variant="body2" className="message-text">
+                      <Typography variant="body2" sx={{ fontSize: 13 }}>
                         {msg.text}
                       </Typography>
-                      <Typography variant="caption" className="time-text">
+                      <Typography variant="caption" sx={{ color: 'text.secondary', fontSize: 12 }}>
                         {msg.time}
                       </Typography>
-                    </div>
-                  </div>
+                    </Box>
+                  </Box>
                 </MenuItem>
               ))}
             </Menu>
 
             {/* User avatar */}
             <Avatar 
-              sx={{ width: 36, height: 36, ml: 2 }}
+              sx={{ width: 36, height: 36, ml: 1 }}
               src="/path/to/user-avatar.jpg"
-              className="user-avatar"
             >
               A
             </Avatar>
