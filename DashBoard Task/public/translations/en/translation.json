@@ -1,0 +1,32 @@
+{
+  "teamTable": {
+    "title": "Team List",
+    "breadcrumb": "Admin Dashboard > Team List",
+    "searchPlaceholder": "Search Team Member",
+    "addUser": "Add User",
+    "selected": "{{count}} Selected",
+    "pagination": "{{from}} - {{to}} of {{total}}",
+    "deleteConfirm": "Are you sure you want to delete this team member?",
+    "columns": {
+      "name": "Name",
+      "position": "Position",
+      "department": "Department",
+      "email": "Email",
+      "phone": "Phone",
+      "status": "Status",
+      "edit": "Edit"
+    },
+    "details": "Details",
+    "statusTypes": {
+      "fullTime": "Full Time",
+      "partTime": "Part Time"
+    },
+    "detailLabels": {
+      "officeLocation": "Office Location",
+      "teamMates": "Team Mates",
+      "birthday": "Birthday",
+      "hireYear": "HR Years",
+      "address": "Address"
+    }
+  }
+}

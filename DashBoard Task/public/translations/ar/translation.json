@@ -1,0 +1,32 @@
+{
+  "teamTable": {
+    "title": "قائمة الفريق",
+    "breadcrumb": "لوحة التحكم > قائمة الفريق",
+    "searchPlaceholder": "بحث عن عضو الفريق",
+    "addUser": "إضافة مستخدم",
+    "selected": "تم اختيار {{count}}",
+    "pagination": "{{from}} - {{to}} من {{total}}",
+    "deleteConfirm": "هل أنت متأكد أنك تريد حذف هذا العضو من الفريق؟",
+    "columns": {
+      "name": "الاسم",
+      "position": "المنصب",
+      "department": "القسم",
+      "email": "البريد الإلكتروني",
+      "phone": "الهاتف",
+      "status": "الحالة",
+      "edit": "تعديل"
+    },
+    "details": "التفاصيل",
+    "statusTypes": {
+      "fullTime": "دوام كامل",
+      "partTime": "دوام جزئي"
+    },
+    "detailLabels": {
+      "officeLocation": "موقع المكتب",
+      "teamMates": "أعضاء الفريق",
+      "birthday": "تاريخ الميلاد",
+      "hireYear": "سنوات التوظيف",
+      "address": "العنوان"
+    }
+  }
+}

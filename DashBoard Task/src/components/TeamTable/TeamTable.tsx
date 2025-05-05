@@ -1,11 +1,9 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import React, { useState } from 'react';
 import {
   Table, TableBody, TableCell, TableContainer, TableHead, TableRow,
   Paper, Checkbox, IconButton, Typography, TextField, Button, Box,
   Avatar, Skeleton, Accordion, AccordionSummary, AccordionDetails,
-  InputAdornment,
-  Stack,
+  InputAdornment, Stack, Select, MenuItem,
 } from '@mui/material';
 import { ExpandMore, Search as SearchIcon } from '@mui/icons-material';
 import EditIcon from '@mui/icons-material/Edit';
@@ -14,17 +12,20 @@ import AddIcon from '@mui/icons-material/Add';
 import Sidebar from '../Sidebar/Sidebar';
 import { useQuery } from '@tanstack/react-query';
 import { fetchTeamMembers, TeamMember } from '../../services/api';
+import { useTranslation } from 'react-i18next';
+import i18n from '../../i18n';
 
 const TeamTable: React.FC = () => {
+  const { t } = useTranslation();
   const [selected, setSelected] = useState<string[]>([]);
   const [page, setPage] = useState(1);
   const rowsPerPage = 5;
   const totalItems = 48;
 
   const { data: members, isLoading } = useQuery<TeamMember[]>({
-    queryKey: ['teamMembers', page],
+    queryKey: ['teamMembers', page, i18n.language],
     queryFn: () => fetchTeamMembers(page, rowsPerPage),
-    staleTime: 5000
+    staleTime: 5000,
   });
 
   const handleSelectAll = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -37,70 +38,77 @@ const TeamTable: React.FC = () => {
   };
 
   const handleSelect = (id: string) => {
-    setSelected(prev => prev.includes(id) 
-      ? prev.filter(item => item !== id) 
-      : [...prev, id]);
+    setSelected((prev) =>
+      prev.includes(id)
+        ? prev.filter((item) => item !== id)
+        : [...prev, id]
+    );
   };
 
   const handleEdit = (id: string) => {
-    const memberToEdit = members?.find(member => member.id === id);
+    const memberToEdit = members?.find((member) => member.id === id);
     if (memberToEdit) {
       console.log('Editing member:', memberToEdit);
     }
   };
 
   const handleDelete = (id: string) => {
-    if (window.confirm('Are you sure you want to delete this team member?')) {
-      setSelected(prev => prev.filter(memberId => memberId !== id));
+    if (window.confirm(t('teamTable.deleteConfirm'))) {
+      setSelected((prev) => prev.filter((memberId) => memberId !== id));
     }
   };
-/*
-  const handlePageChange = (_event: React.ChangeEvent<unknown>, value: number) => {
-    setPage(value);
-  };
-*/
+
   const totalPages = Math.ceil(totalItems / rowsPerPage);
 
+  const handleLanguageChange = (lang: string) => {
+    i18n.changeLanguage(lang);
+  };
+
   return (
-    <Box sx={{ display: 'flex' }}>
+    <Box sx={{
+      display: 'flex',
+      direction: i18n.language === 'ar' ? 'rtl' : 'ltr',
+    }}>
       <Sidebar />
       <Box sx={{ flexGrow: 1, p: 3, ml: { sm: 0 } }}>
         {/* Header Section */}
         <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 3 }}>
-          <Typography variant="h5" sx={{ fontWeight: 600 }}>Team List</Typography>
+          <Typography variant="h5" sx={{ fontWeight: 600 }}>
+            {t('teamTable.title')}
+          </Typography>
           <Typography variant="body2" color="text.secondary">
-            Admin Dashboard &gt; Team List
+            {t('teamTable.breadcrumb')}
           </Typography>
         </Box>
 
         {/* Search and Add User Section */}
-        <Box sx={{ 
-          display: 'flex', 
-          flexDirection: { xs: 'column', sm: 'row' }, 
-          justifyContent: 'space-between', 
-          alignItems: 'center', 
+        <Box sx={{
+          display: 'flex',
+          flexDirection: { xs: 'column', sm: 'row' },
+          justifyContent: 'space-between',
+          alignItems: 'center',
           mb: 3,
-          gap: 2
+          gap: 2,
         }}>
-          <Box sx={{ 
-            display: 'flex', 
-            alignItems: 'center', 
+          <Box sx={{
+            display: 'flex',
+            alignItems: 'center',
             gap: 1,
-            width: { xs: '100%', sm: 'auto' }
+            width: { xs: '100%', sm: 'auto' },
           }}>
             {selected.length > 0 && (
               <Typography variant="body2" sx={{ whiteSpace: 'nowrap' }}>
-                {selected.length} Selected
+                {t('teamTable.selected', { count: selected.length })}
               </Typography>
             )}
             <TextField
-              placeholder="Search Task"
+              placeholder={t('teamTable.searchPlaceholder')}
               size="small"
-              sx={{ 
+              sx={{
                 width: { xs: '100%', sm: 300 },
                 '& .MuiOutlinedInput-root': {
-                  backgroundColor: '#F9FAFB'
-                }
+                  backgroundColor: '#F9FAFB',
+                },
               }}
               InputProps={{
                 startAdornment: (
@@ -111,22 +119,33 @@ const TeamTable: React.FC = () => {
               }}
             />
           </Box>
-          <Button
-            variant="contained"
-            startIcon={<AddIcon />}
-            sx={{ 
-              width: { xs: '100%', sm: 'auto' },
-              whiteSpace: 'nowrap'
-            }}
-          >
-            Add User
-          </Button>
+          <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
+            <Select
+              value={i18n.language}
+              onChange={(e) => handleLanguageChange(e.target.value as string)}
+              size="small"
+              sx={{ minWidth: 100 }}
+            >
+              <MenuItem value="en">🇺🇳 English</MenuItem>
+              <MenuItem value="ar">🇸🇦 العربية</MenuItem>
+            </Select>
+            <Button
+              variant="contained"
+              startIcon={<AddIcon />}
+              sx={{
+                width: { xs: '100%', sm: 'auto' },
+                whiteSpace: 'nowrap',
+              }}
+            >
+              {t('teamTable.addUser')}
+            </Button>
+          </Box>
         </Box>
 
         {/* Table Section */}
-        <TableContainer 
-          component={Paper} 
-          sx={{ 
+        <TableContainer
+          component={Paper}
+          sx={{
             boxShadow: 'none',
             border: '1px solid #E5E7EB',
             borderRadius: '8px',
@@ -135,12 +154,12 @@ const TeamTable: React.FC = () => {
             maxWidth: '100%',
           }}
         >
-          <Table sx={{ 
+          <Table sx={{
             minWidth: 1300,
             '& .MuiTableCell-root': {
               padding: '12px 16px',
-              fontSize: '0.875rem'
-            }
+              fontSize: '0.875rem',
+            },
           }}>
             <TableHead sx={{ backgroundColor: '#F9FAFB' }}>
               <TableRow>
@@ -152,13 +171,13 @@ const TeamTable: React.FC = () => {
                     size="small"
                   />
                 </TableCell>
-                <TableCell sx={{ width: 150 }}>Name</TableCell>
-                <TableCell sx={{ width: 120 }}>Position</TableCell>
-                <TableCell sx={{ width: 120 }}>Department</TableCell>
-                <TableCell sx={{ width: 180 }}>Email</TableCell>
-                <TableCell sx={{ width: 120 }}>Phone</TableCell>
-                <TableCell sx={{ width: 100 }}>Status</TableCell>
-                <TableCell sx={{ width: 100 }}>Edit</TableCell>
+                <TableCell sx={{ width: 150 }}>{t('teamTable.columns.name')}</TableCell>
+                <TableCell sx={{ width: 120 }}>{t('teamTable.columns.position')}</TableCell>
+                <TableCell sx={{ width: 120 }}>{t('teamTable.columns.department')}</TableCell>
+                <TableCell sx={{ width: 180 }}>{t('teamTable.columns.email')}</TableCell>
+                <TableCell sx={{ width: 120 }}>{t('teamTable.columns.phone')}</TableCell>
+                <TableCell sx={{ width: 100 }}>{t('teamTable.columns.status')}</TableCell>
+                <TableCell sx={{ width: 100 }}>{t('teamTable.columns.edit')}</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
@@ -194,29 +213,29 @@ const TeamTable: React.FC = () => {
                           backgroundColor: member.status === 'Full Time' ? '#E0F7FA' : '#FFF8E1',
                           color: member.status === 'Full Time' ? '#006064' : '#FF8F00',
                           fontSize: '0.75rem',
-                          fontWeight: 500
+                          fontWeight: 500,
                         }}>
-                          {member.status}
+                          {t(`teamTable.statusTypes.${member.status === 'Full Time' ? 'fullTime' : 'partTime'}`)}
                         </Box>
                       </TableCell>
                       <TableCell>
                         <Box sx={{ display: 'flex', gap: 1 }}>
-                          <IconButton 
+                          <IconButton
                             size="small"
                             onClick={() => handleEdit(member.id)}
-                            sx={{ 
+                            sx={{
                               backgroundColor: '#EDF2F7',
-                              '&:hover': { backgroundColor: '#E2E8F0' }
+                              '&:hover': { backgroundColor: '#E2E8F0' },
                             }}
                           >
                             <EditIcon fontSize="small" sx={{ color: '#4A5568' }} />
                           </IconButton>
-                          <IconButton 
+                          <IconButton
                             size="small"
                             onClick={() => handleDelete(member.id)}
-                            sx={{ 
+                            sx={{
                               backgroundColor: '#FEE2E2',
-                              '&:hover': { backgroundColor: '#FECACA' }
+                              '&:hover': { backgroundColor: '#FECACA' },
                             }}
                           >
                             <DeleteIcon fontSize="small" sx={{ color: '#DC2626' }} />
@@ -224,36 +243,38 @@ const TeamTable: React.FC = () => {
                         </Box>
                       </TableCell>
                     </TableRow>
-                    
+
                     {/* Accordion for Details */}
                     <TableRow>
                       <TableCell colSpan={8} sx={{ p: 0, borderBottom: '1px solid #E5E7EB' }}>
-                        <Accordion sx={{ 
+                        <Accordion sx={{
                           boxShadow: 'none',
                           '&:before': { display: 'none' },
-                          '&.Mui-expanded': { m: 0 }
+                          '&.Mui-expanded': { m: 0 },
                         }}>
-                          <AccordionSummary 
+                          <AccordionSummary
                             expandIcon={<ExpandMore />}
-                            sx={{ 
+                            sx={{
                               minHeight: '30px !important',
-                              '& .MuiAccordionSummary-content': { m: 0 }
+                              '& .MuiAccordionSummary-content': { m: 0 },
                             }}
                           >
-                            <Typography variant="body2" fontWeight={500}>Details</Typography>
+                            <Typography variant="body2" fontWeight={500}>
+                              {t('teamTable.details')}
+                            </Typography>
                           </AccordionSummary>
                           <AccordionDetails sx={{ pt: 0, pb: 2 }}>
-                            <Box sx={{ 
+                            <Box sx={{
                               display: 'flex',
                               flexWrap: 'wrap',
                               gap: 3,
-                              '& > *': { minWidth: '150px' }
+                              '& > *': { minWidth: '150px' },
                             }}>
-                              <DetailItem label="Office Location" value={member.officeLocation} />
-                              <DetailItem label="Team Mates" value={member.teamMates?.join(', ')} />
-                              <DetailItem label="Birthday" value={member.birthday} />
-                              <DetailItem label="HR Year" value={member.hireYear} />
-                              <DetailItem label="Address" value={member.address} />
+                              <DetailItem label={t('teamTable.detailLabels.officeLocation')} value={member.officeLocation} />
+                              <DetailItem label={t('teamTable.detailLabels.teamMates')} value={member.teamMates?.join(', ')} />
+                              <DetailItem label={t('teamTable.detailLabels.birthday')} value={member.birthday} />
+                              <DetailItem label={t('teamTable.detailLabels.hireYear')} value={member.hireYear} />
+                              <DetailItem label={t('teamTable.detailLabels.address')} value={member.address} />
                             </Box>
                           </AccordionDetails>
                         </Accordion>
@@ -267,38 +288,42 @@ const TeamTable: React.FC = () => {
         </TableContainer>
 
         {/* Pagination */}
-<Box sx={{ 
-  display: 'flex', 
-  justifyContent: 'flex-end', 
-  alignItems: 'center', 
-  width: '100%',
-  mt: 2
-}}>
-  <Typography variant="body2" color="text.secondary">
-    {`${(page - 1) * rowsPerPage + 1} - ${Math.min(page * rowsPerPage, totalItems)} of ${totalItems}`}
-  </Typography>
-  
-  <Stack direction="row" spacing={1}>
-    <Button 
-      variant="outlined" 
-      size="small"
-      disabled={page === 1}
-      onClick={() => setPage(p => Math.max(1, p - 1))}
-      sx={{ minWidth: 32 }}
-    >
-      &lt;
-    </Button>
-    <Button 
-      variant="outlined" 
-      size="small"
-      disabled={page === totalPages}
-      onClick={() => setPage(p => Math.min(totalPages, p + 1))}
-      sx={{ minWidth: 32 }}
-    >
-      &gt;
-    </Button>
-  </Stack>
-</Box>
+        <Box sx={{
+          display: 'flex',
+          justifyContent: 'flex-end',
+          alignItems: 'center',
+          width: '100%',
+          mt: 2,
+          gap: 2,
+        }}>
+          <Typography variant="body2" color="text.secondary">
+            {t('teamTable.pagination', {
+              from: (page - 1) * rowsPerPage + 1,
+              to: Math.min(page * rowsPerPage, totalItems),
+              total: totalItems,
+            })}
+          </Typography>
+          <Stack direction="row" spacing={1}>
+            <Button
+              variant="outlined"
+              size="small"
+              disabled={page === 1}
+              onClick={() => setPage((p) => Math.max(1, p - 1))}
+              sx={{ minWidth: 32 }}
+            >
+              {'<'}
+            </Button>
+            <Button
+              variant="outlined"
+              size="small"
+              disabled={page === totalPages}
+              onClick={() => setPage((p) => Math.min(totalPages, p + 1))}
+              sx={{ minWidth: 32 }}
+            >
+              {'>'}
+            </Button>
+          </Stack>
+        </Box>
       </Box>
     </Box>
   );
@@ -309,7 +334,6 @@ const TableSkeleton: React.FC<{ rowsPerPage: number }> = ({ rowsPerPage }) => (
   <>
     {Array(rowsPerPage).fill(0).map((_, i) => (
       <React.Fragment key={i}>
-        {/* Main row skeleton - matches exact height of loaded row */}
         <TableRow sx={{ height: 72 }}>
           <TableCell padding="checkbox">
             <Skeleton variant="rectangular" width={18} height={18} />
@@ -325,45 +349,20 @@ const TableSkeleton: React.FC<{ rowsPerPage: number }> = ({ rowsPerPage }) => (
           <TableCell><Skeleton variant="text" width={150} height={24} /></TableCell>
           <TableCell><Skeleton variant="text" width={100} height={24} /></TableCell>
           <TableCell>
-            <Skeleton 
-              variant="rectangular" 
-              width={80} 
-              height={24} 
-              sx={{ borderRadius: '12px' }} 
-            />
+            <Skeleton variant="rectangular" width={80} height={24} sx={{ borderRadius: '12px' }} />
           </TableCell>
           <TableCell>
             <Box sx={{ display: 'flex', gap: 1 }}>
-              <Skeleton 
-                variant="rectangular" 
-                width={32} 
-                height={32} 
-                sx={{ borderRadius: '4px' }} 
-              />
-              <Skeleton 
-                variant="rectangular" 
-                width={32} 
-                height={32} 
-                sx={{ borderRadius: '4px' }} 
-              />
+              <Skeleton variant="rectangular" width={32} height={32} sx={{ borderRadius: '4px' }} />
+              <Skeleton variant="rectangular" width={32} height={32} sx={{ borderRadius: '4px' }} />
             </Box>
           </TableCell>
         </TableRow>
-        
-        {/* Accordion skeleton - matches expanded details height */}
         <TableRow>
           <TableCell colSpan={8} sx={{ p: 0, borderBottom: '1px solid #E5E7EB' }}>
             <Box sx={{ p: 2, height: 120 }}>
               <Skeleton variant="text" width={60} height={24} sx={{ mb: 1 }} />
-              <Box sx={{ 
-                display: 'flex',
-                flexWrap: 'wrap',
-                gap: 3,
-                '& > *': { 
-                  minWidth: '150px',
-                  flex: '1 1 150px'
-                }
-              }}>
+              <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 3 }}>
                 {Array(5).fill(0).map((_, j) => (
                   <Box key={j}>
                     <Skeleton variant="text" width={100} height={20} />
