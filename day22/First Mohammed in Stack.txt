@@ -1,0 +1,48 @@
+using System;
+using System.Collections.Generic;
+
+namespace myStack
+{
+    class Person
+    {
+        public int Id { get; set; }
+        public string FName { get; set; }
+
+        public string LName { get; set; }
+
+        public string Gender { get; set; }
+    }
+
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            Stack<Person> stack = new Stack<Person>();
+
+            stack.Push(new Person { Id = 1, FName = "Salma", LName = "hamdy", Gender = "female" });
+            stack.Push(new Person { Id = 2, FName = "Mohammed", LName = "ahmed", Gender = "male" });
+            stack.Push(new Person { Id = 3, FName = "yehia", LName = "hamdy", Gender = "male" });
+            stack.Push(new Person { Id = 4, FName = "Mohammed", LName = "hamdy", Gender = "male" });
+
+
+
+
+            string firstMohammed = GetFirstPersonCalledMohammed(stack, p => p.FName == "Mohammed");
+            
+            Console.WriteLine("First male in the stack is: " + firstMohammed);
+        
+
+            static string GetFirstPersonCalledMohammed(Stack<Person> stack, Predicate<Person> pre)
+            {
+                foreach (Person p in stack)
+                {
+                    if (pre(p))
+                        return $"ID: {p.Id}, Name: {p.FName} {p.LName}, Gender: {p.Gender}";
+                }
+
+
+                return "No mohammed found";
+            }
+        }
+    }
+}
