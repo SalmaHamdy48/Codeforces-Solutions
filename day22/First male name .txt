@@ -1,0 +1,41 @@
+using System;
+using System.Collections.Generic;
+
+namespace myQueue
+{
+    class Person
+    {
+        public string FName { get; set; }
+
+        public string LName { get; set; }
+
+        public string Gender { get; set; }
+    }
+
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            Queue<Person> queue = new Queue<Person>();
+
+            queue.Enqueue(new Person { FName = "Salma", LName = "hamdy", Gender = "female" });
+            queue.Enqueue(new Person { FName = "ahmed", LName = "hamdy", Gender = "male" });
+            queue.Enqueue(new Person { FName = "yehia", LName = "hamdy", Gender = "male" });
+
+            string firstMaleName = GetFirstMaleName(queue, p => p.Gender == "male");
+            Console.WriteLine("First male in the queue is: " + firstMaleName);
+
+            static string GetFirstMaleName(Queue<Person> queue, Func<Person,bool> func)
+            {
+                foreach (Person p in queue)
+                {
+                    if (func(p))
+                        return p.FName;
+                }
+
+                
+                return "No males found";
+            }
+        }
+    }
+}
