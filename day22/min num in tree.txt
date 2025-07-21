@@ -1,0 +1,46 @@
+using System;
+
+namespace BinaryTreeMinDFS
+{
+    public class TreeNode
+    {
+        public int Value;
+        public TreeNode Left;
+        public TreeNode Right;
+
+        public TreeNode(int value)
+        {
+            Value = value;
+            Left = null;
+            Right = null;
+        }
+    }
+
+    class Program
+    {
+        static void Main(string[] args)
+        {
+
+            TreeNode root = new TreeNode(60);
+            root.Left = new TreeNode(20);
+            root.Right = new TreeNode(10);
+            root.Left.Left = new TreeNode(30);
+            root.Left.Right = new TreeNode(45);
+            root.Right.Right = new TreeNode(5);
+
+            int minValue = GetMinValue(root);
+            Console.WriteLine("The smallest value is  " + minValue);
+        }
+
+        static int GetMinValue(TreeNode node)
+        {
+            if (node == null)
+                return int.MaxValue;
+
+            int leftMin = GetMinValue(node.Left);
+            int rightMin = GetMinValue(node.Right);
+
+            return Math.Min(node.Value, Math.Min(leftMin, rightMin));
+        }
+    }
+}
