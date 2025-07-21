@@ -1,0 +1,61 @@
+using System;
+using System.Collections.Generic;
+
+namespace SimpleGraph
+{
+    class Graph
+    {
+        private Dictionary<string, List<string>> adjcentList;
+
+        public Graph()
+        {
+            adjcentList = new Dictionary<string, List<string>>();
+        }
+
+        public void AddNode(string node)
+        {
+            if (!adjcentList.ContainsKey(node))
+            {
+                adjcentList[node] = new List<string>();
+            }
+        }
+
+
+        public void AddEdge(string from, string to, bool isUndirected = true)
+        {
+            AddNode(from);
+            AddNode(to);
+
+            adjcentList[from].Add(to);
+
+            if (isUndirected)
+                adjcentList[to].Add(from);
+        }
+
+        public void PrintGraph()
+        {
+            foreach (var node in adjcentList)
+            {
+                Console.Write(node.Key + " -> ");
+                Console.WriteLine(string.Join(", ", node.Value));
+            }
+        }
+    }
+
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            Graph graph = new Graph();
+
+            graph.AddEdge("A", "B");
+            graph.AddEdge("A", "C");
+            graph.AddEdge("B", "D");
+            graph.AddEdge("C", "D");
+            graph.AddEdge("E", "F");
+
+
+            graph.PrintGraph();
+        }
+    }
+}
