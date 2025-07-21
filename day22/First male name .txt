@@ -6,10 +6,23 @@ namespace myQueue
     class Person
     {
         public string FName { get; set; }
-
         public string LName { get; set; }
-
         public string Gender { get; set; }
+    }
+
+    static class QueueExtensions
+    {
+        
+        public static string GetFirstMatchingPerson(this Queue<Person> queue, Func<Person, bool> predicate)
+        {
+            foreach (Person p in queue)
+            {
+                if (predicate(p))
+                    return p.FName;
+            }
+
+            return "No matching person found";
+        }
     }
 
     class Program
@@ -18,24 +31,13 @@ namespace myQueue
         {
             Queue<Person> queue = new Queue<Person>();
 
-            queue.Enqueue(new Person { FName = "Salma", LName = "hamdy", Gender = "female" });
-            queue.Enqueue(new Person { FName = "ahmed", LName = "hamdy", Gender = "male" });
-            queue.Enqueue(new Person { FName = "yehia", LName = "hamdy", Gender = "male" });
+            queue.Enqueue(new Person { FName = "Salma", LName = "Hamdy", Gender = "female" });
+            queue.Enqueue(new Person { FName = "Ahmed", LName = "Hamdy", Gender = "male" });
+            queue.Enqueue(new Person { FName = "Yehia", LName = "Hamdy", Gender = "male" });
 
-            string firstMaleName = GetFirstMaleName(queue, p => p.Gender == "male");
+            
+            string firstMaleName = queue.GetFirstMatchingPerson(p => p.Gender == "male");
             Console.WriteLine("First male in the queue is: " + firstMaleName);
-
-            static string GetFirstMaleName(Queue<Person> queue, Func<Person,bool> func)
-            {
-                foreach (Person p in queue)
-                {
-                    if (func(p))
-                        return p.FName;
-                }
-
-                
-                return "No males found";
-            }
         }
     }
 }
