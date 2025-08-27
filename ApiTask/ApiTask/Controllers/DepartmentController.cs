@@ -1,5 +1,7 @@
 using ApiTask.Data;
+using ApiTask.Dto;
 using ApiTask.Models;
+using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -10,51 +12,55 @@ namespace ApiTask.Controllers
     public class DepartmentController : ControllerBase
     {
         private readonly ApplicationDbContext _context;
+        private readonly IMapper _mapper;
 
-        public DepartmentController(ApplicationDbContext context)
+        public DepartmentController(ApplicationDbContext context, IMapper mapper)
         {
             _context = context;
+            _mapper = mapper;
         }
 
-        // Get All
         [HttpGet]
         public async Task<IActionResult> GetAll(CancellationToken cancellationToken)
         {
             var depts = await _context.Departments.ToListAsync(cancellationToken);
-            return Ok(depts);
+            var deptDtos = _mapper.Map<List<DepartmentDto>>(depts);
+            return Ok(deptDtos);
         }
 
-        // Get By Id
         [HttpGet("{id}")]
         public async Task<IActionResult> GetById(int id, CancellationToken cancellationToken)
         {
             var dept = await _context.Departments.FindAsync(new object[] { id }, cancellationToken);
             if (dept == null) return NotFound();
-            return Ok(dept);
+
+            var deptDto = _mapper.Map<DepartmentDto>(dept);
+            return Ok(deptDto);
         }
 
-        // Create
         [HttpPost]
-        public async Task<IActionResult> Create(Department department, CancellationToken cancellationToken)
+        public async Task<IActionResult> Create(DepartmentDto deptDto, CancellationToken cancellationToken)
         {
-            await _context.Departments.AddAsync(department, cancellationToken);
+            var dept = _mapper.Map<Department>(deptDto);
+            await _context.Departments.AddAsync(dept, cancellationToken);
             await _context.SaveChangesAsync(cancellationToken);
-            return CreatedAtAction(nameof(GetById), new { id = department.Id }, department);
+
+            var resultDto = _mapper.Map<DepartmentDto>(dept);
+            return CreatedAtAction(nameof(GetById), new { id = dept.Id }, resultDto);
         }
 
-        // Update
         [HttpPut("{id}")]
-        public async Task<IActionResult> Update(int id, Department department, CancellationToken cancellationToken)
+        public async Task<IActionResult> Update(int id, DepartmentDto deptDto, CancellationToken cancellationToken)
         {
-            if (id != department.Id) return BadRequest();
+            if (id != deptDto.Id) return BadRequest();
 
-            _context.Entry(department).State = EntityState.Modified;
+            var dept = _mapper.Map<Department>(deptDto);
+            _context.Entry(dept).State = EntityState.Modified;
             await _context.SaveChangesAsync(cancellationToken);
 
             return NoContent();
         }
 
-        // Delete
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(int id, CancellationToken cancellationToken)
         {

@@ -1,5 +1,7 @@
 using ApiTask.Data;
+using ApiTask.Dto;
 using ApiTask.Models;
+using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -10,25 +12,38 @@ namespace ApiTask.Controllers
     public class EmployeeController : ControllerBase
     {
         private readonly ApplicationDbContext _context;
+        private readonly IMapper _mapper;
 
-        public EmployeeController(ApplicationDbContext context)
+        public EmployeeController(ApplicationDbContext context, IMapper mapper)
         {
             _context = context;
+            _mapper = mapper;
         }
 
         [HttpGet]
         public async Task<IActionResult> GetAll(CancellationToken cancellationToken)
         {
-            var employees = await _context.Employees.ToListAsync(cancellationToken);
-            return Ok(employees);
+            var employees = await _context.Employees
+                .Include(e => e.Department)
+                .Include(e => e.Role)
+                .ToListAsync(cancellationToken);
+
+            var employeeDtos = _mapper.Map<List<EmployeeDto>>(employees);
+            return Ok(employeeDtos);
         }
 
         [HttpGet("{id}")]
         public async Task<IActionResult> GetById(int id, CancellationToken cancellationToken)
         {
-            var employee = await _context.Employees.FindAsync(new object[] { id }, cancellationToken);
+            var employee = await _context.Employees
+                .Include(e => e.Department)
+                .Include(e => e.Role)
+                .FirstOrDefaultAsync(e => e.Id == id, cancellationToken);
+
             if (employee == null) return NotFound();
-            return Ok(employee);
+
+            var employeeDto = _mapper.Map<EmployeeDto>(employee);
+            return Ok(employeeDto);
         }
 
         [HttpPost]
@@ -36,7 +51,9 @@ namespace ApiTask.Controllers
         {
             await _context.Employees.AddAsync(employee, cancellationToken);
             await _context.SaveChangesAsync(cancellationToken);
-            return CreatedAtAction(nameof(GetById), new { id = employee.Id }, employee);
+
+            var employeeDto = _mapper.Map<EmployeeDto>(employee);
+            return CreatedAtAction(nameof(GetById), new { id = employee.Id }, employeeDto);
         }
 
         [HttpPut("{id}")]
