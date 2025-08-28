@@ -20,6 +20,7 @@ namespace ApiTask.Controllers
             _mapper = mapper;
         }
 
+        // ✅ GET all employees
         [HttpGet]
         public async Task<IActionResult> GetAll(CancellationToken cancellationToken)
         {
@@ -32,6 +33,7 @@ namespace ApiTask.Controllers
             return Ok(employeeDtos);
         }
 
+        // ✅ GET employee by Id
         [HttpGet("{id}")]
         public async Task<IActionResult> GetById(int id, CancellationToken cancellationToken)
         {
@@ -46,20 +48,27 @@ namespace ApiTask.Controllers
             return Ok(employeeDto);
         }
 
+        // ✅ POST - Create employee
         [HttpPost]
-        public async Task<IActionResult> Create(Employee employee, CancellationToken cancellationToken)
+        public async Task<IActionResult> Create(EmployeeDto employeeDto, CancellationToken cancellationToken)
         {
+            var employee = _mapper.Map<Employee>(employeeDto);
+
             await _context.Employees.AddAsync(employee, cancellationToken);
             await _context.SaveChangesAsync(cancellationToken);
 
-            var employeeDto = _mapper.Map<EmployeeDto>(employee);
-            return CreatedAtAction(nameof(GetById), new { id = employee.Id }, employeeDto);
+            var resultDto = _mapper.Map<EmployeeDto>(employee);
+            return CreatedAtAction(nameof(GetById), new { id = employee.Id }, resultDto);
         }
 
+        // ✅ PUT - Update employee
         [HttpPut("{id}")]
-        public async Task<IActionResult> Update(int id, Employee employee, CancellationToken cancellationToken)
+        public async Task<IActionResult> Update(int id, EmployeeDto employeeDto, CancellationToken cancellationToken)
         {
-            if (id != employee.Id) return BadRequest();
+            var employee = await _context.Employees.FindAsync(new object[] { id }, cancellationToken);
+            if (employee == null) return NotFound();
+
+            _mapper.Map(employeeDto, employee);
 
             _context.Entry(employee).State = EntityState.Modified;
             await _context.SaveChangesAsync(cancellationToken);
@@ -67,6 +76,7 @@ namespace ApiTask.Controllers
             return NoContent();
         }
 
+        // ✅ DELETE employee
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(int id, CancellationToken cancellationToken)
         {
