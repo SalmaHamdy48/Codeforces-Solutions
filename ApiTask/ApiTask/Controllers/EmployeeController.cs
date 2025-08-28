@@ -20,7 +20,7 @@ namespace ApiTask.Controllers
             _mapper = mapper;
         }
 
-        // ✅ GET all employees
+        
         [HttpGet]
         public async Task<IActionResult> GetAll(CancellationToken cancellationToken)
         {
@@ -33,7 +33,7 @@ namespace ApiTask.Controllers
             return Ok(employeeDtos);
         }
 
-        // ✅ GET employee by Id
+        
         [HttpGet("{id}")]
         public async Task<IActionResult> GetById(int id, CancellationToken cancellationToken)
         {
@@ -48,7 +48,7 @@ namespace ApiTask.Controllers
             return Ok(employeeDto);
         }
 
-        // ✅ POST - Create employee
+        
         [HttpPost]
         public async Task<IActionResult> Create(EmployeeDto employeeDto, CancellationToken cancellationToken)
         {
@@ -61,7 +61,7 @@ namespace ApiTask.Controllers
             return CreatedAtAction(nameof(GetById), new { id = employee.Id }, resultDto);
         }
 
-        // ✅ PUT - Update employee
+        
         [HttpPut("{id}")]
         public async Task<IActionResult> Update(int id, EmployeeDto employeeDto, CancellationToken cancellationToken)
         {
@@ -76,7 +76,7 @@ namespace ApiTask.Controllers
             return NoContent();
         }
 
-        // ✅ DELETE employee
+        
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(int id, CancellationToken cancellationToken)
         {
