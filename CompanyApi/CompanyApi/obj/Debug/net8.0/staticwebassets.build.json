@@ -1,0 +1,39 @@
+{
+  "Version": 1,
+  "Hash": "9O77go0I62nX5yGMAVMEhNRnJPdb3ihv6XRrZJ0c6xo=",
+  "Source": "CompanyApi",
+  "BasePath": "_content/CompanyApi",
+  "Mode": "Default",
+  "ManifestType": "Build",
+  "ReferencedProjectsConfiguration": [],
+  "DiscoveryPatterns": [
+    {
+      "Name": "CompanyApi\\wwwroot",
+      "Source": "CompanyApi",
+      "ContentRoot": "C:\\Users\\SH\\RiderProjects\\CompanyApi\\CompanyApi\\wwwroot\\",
+      "BasePath": "_content/CompanyApi",
+      "Pattern": "**"
+    }
+  ],
+  "Assets": [
+    {
+      "Identity": "C:\\Users\\SH\\RiderProjects\\CompanyApi\\CompanyApi\\wwwroot\\employee\\Task.png",
+      "SourceId": "CompanyApi",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\SH\\RiderProjects\\CompanyApi\\CompanyApi\\wwwroot\\",
+      "BasePath": "_content/CompanyApi",
+      "RelativePath": "employee/Task.png",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "PreferTarget",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\employee\\Task.png"
+    }
+  ]
+}
