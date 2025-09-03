@@ -12,32 +12,28 @@ namespace CompanyApi.Controllers;
 [Route("api/[controller]")]
 public class DependentController(IGenericRepository<Dependent> repo, IMapper mapper) : ControllerBase
 {
-    private readonly IGenericRepository<Dependent> _repo = repo;
-    private readonly IMapper _mapper = mapper;
-
-
     [HttpGet]
     public async Task<ActionResult<object>> GetAll([FromQuery] int pageNumber = 1, [FromQuery] int pageSize = 10)
     {
-        var (items, total) = await _repo.GetPagedAsync(pageNumber, pageSize);
-        return Ok(new { total, pageNumber, pageSize, data = items.Select(_mapper.Map<DependentDto>) });
+        var (items, total) = await repo.GetPagedAsync(pageNumber, pageSize);
+        return Ok(new { total, pageNumber, pageSize, data = items.Select(mapper.Map<DependentDto>) });
     }
 
 
     [HttpGet("{id:int}")]
     public async Task<ActionResult<DependentDto>> Get(int id)
     {
-        var d = await _repo.GetByIdAsync(id);
-        return d is null ? NotFound() : Ok(_mapper.Map<DependentDto>(d));
+        var d = await repo.GetByIdAsync(id);
+        return d is null ? NotFound() : Ok(mapper.Map<DependentDto>(d));
     }
 
 
     [HttpPost]
     public async Task<ActionResult<DependentDto>> Create(DependentDto dto)
     {
-        var entity = _mapper.Map<Dependent>(dto);
-        await _repo.AddAsync(entity);
-        return CreatedAtAction(nameof(Get), new { id = entity.Id }, _mapper.Map<DependentDto>(entity));
+        var entity = mapper.Map<Dependent>(dto);
+        await repo.AddAsync(entity);
+        return CreatedAtAction(nameof(Get), new { id = entity.Id }, mapper.Map<DependentDto>(entity));
     }
 
 
@@ -45,8 +41,8 @@ public class DependentController(IGenericRepository<Dependent> repo, IMapper map
     public async Task<IActionResult> Update(int id, DependentDto dto)
     {
         if (id != dto.Id) return BadRequest();
-        var entity = _mapper.Map<Dependent>(dto);
-        await _repo.UpdateAsync(entity);
+        var entity = mapper.Map<Dependent>(dto);
+        await repo.UpdateAsync(entity);
         return NoContent();
     }
 
@@ -54,7 +50,7 @@ public class DependentController(IGenericRepository<Dependent> repo, IMapper map
     [HttpDelete("{id:int}")]
     public async Task<IActionResult> Delete(int id)
     {
-        await _repo.DeleteAsync(id);
+        await repo.DeleteAsync(id);
         return NoContent();
     }
 }

@@ -13,16 +13,11 @@ namespace CompanyApi.Controllers;
 public class EmployeeController(IGenericRepository<Employee> repo, IMapper mapper, IFileUpload fileUpload)
     : ControllerBase
 {
-    private readonly IGenericRepository<Employee> _repo = repo;
-    private readonly IMapper _mapper = mapper;
-    private readonly IFileUpload _fileUpload = fileUpload;
-
-
     [HttpGet]
     public async Task<ActionResult<object>> GetAll([FromQuery] int pageNumber = 1, [FromQuery] int pageSize = 10)
     {
-        var (items, total) = await _repo.GetPagedAsync(pageNumber, pageSize, includeProperties: "Department");
-        var dtos = items.Select(_mapper.Map<EmployeeDto>);
+        var (items, total) = await repo.GetPagedAsync(pageNumber, pageSize, includeProperties: "Department");
+        var dtos = items.Select(mapper.Map<EmployeeDto>);
         return Ok(new { total, pageNumber, pageSize, data = dtos });
     }
 
@@ -30,18 +25,18 @@ public class EmployeeController(IGenericRepository<Employee> repo, IMapper mappe
     [HttpGet("{id:guid}")]
     public async Task<ActionResult<EmployeeDto>> Get(Guid id)
     {
-        var e = await _repo.GetByIdAsync(id);
-        return e is null ? NotFound() : Ok(_mapper.Map<EmployeeDto>(e));
+        var e = await repo.GetByIdAsync(id);
+        return e is null ? NotFound() : Ok(mapper.Map<EmployeeDto>(e));
     }
 
 
     [HttpPost]
     public async Task<ActionResult<EmployeeDto>> Create([FromForm] EmployeeCreateDto dto)
     {
-        var entity = _mapper.Map<Employee>(dto);
-        entity.ImageFileName = await _fileUpload.SaveAsync(dto.Image, "employee");
-        await _repo.AddAsync(entity);
-        var result = _mapper.Map<EmployeeDto>(entity);
+        var entity = mapper.Map<Employee>(dto);
+        entity.ImageFileName = await fileUpload.SaveAsync(dto.Image, "employee");
+        await repo.AddAsync(entity);
+        var result = mapper.Map<EmployeeDto>(entity);
         return CreatedAtAction(nameof(Get), new { id = entity.Id }, result);
     }
 
@@ -49,20 +44,20 @@ public class EmployeeController(IGenericRepository<Employee> repo, IMapper mappe
     [HttpPut("{id:guid}")]
     public async Task<IActionResult> Update(Guid id, [FromForm] EmployeeUpdateDto dto)
     {
-        var entity = await _repo.GetByIdAsync(id);
+        var entity = await repo.GetByIdAsync(id);
         if (entity is null) return NotFound();
 
 
         var oldImage = entity.ImageFileName;
-        _mapper.Map(dto, entity);
+        mapper.Map(dto, entity);
         if (dto.Image != null)
         {
-            await _fileUpload.DeleteIfExistsAsync(oldImage, "employee");
-            entity.ImageFileName = await _fileUpload.SaveAsync(dto.Image, "employee");
+            await fileUpload.DeleteIfExistsAsync(oldImage, "employee");
+            entity.ImageFileName = await fileUpload.SaveAsync(dto.Image, "employee");
         }
 
 
-        await _repo.UpdateAsync(entity);
+        await repo.UpdateAsync(entity);
         return NoContent();
     }
 
@@ -70,10 +65,10 @@ public class EmployeeController(IGenericRepository<Employee> repo, IMapper mappe
     [HttpDelete("{id:guid}")]
     public async Task<IActionResult> Delete(Guid id)
     {
-        var e = await _repo.GetByIdAsync(id);
+        var e = await repo.GetByIdAsync(id);
         if (e == null) return NotFound();
-        await _fileUpload.DeleteIfExistsAsync(e.ImageFileName, "employee");
-        await _repo.DeleteAsync(id);
+        await fileUpload.DeleteIfExistsAsync(e.ImageFileName, "employee");
+        await repo.DeleteAsync(id);
         return NoContent();
     }
 }

@@ -9,32 +9,28 @@ using Microsoft.AspNetCore.Mvc;
 [Route("api/[controller]")]
 public class ProjectController(IGenericRepository<Project> repo, IMapper mapper) : ControllerBase
 {
-    private readonly IGenericRepository<Project> _repo = repo;
-    private readonly IMapper _mapper = mapper;
-
-
     [HttpGet]
     public async Task<ActionResult<object>> GetAll([FromQuery] int pageNumber = 1, [FromQuery] int pageSize = 10)
     {
-        var (items, total) = await _repo.GetPagedAsync(pageNumber, pageSize);
-        return Ok(new { total, pageNumber, pageSize, data = items.Select(_mapper.Map<ProjectDto>) });
+        var (items, total) = await repo.GetPagedAsync(pageNumber, pageSize);
+        return Ok(new { total, pageNumber, pageSize, data = items.Select(mapper.Map<ProjectDto>) });
     }
 
 
     [HttpGet("{id:int}")]
     public async Task<ActionResult<ProjectDto>> Get(int id)
     {
-        var p = await _repo.GetByIdAsync(id);
-        return p is null ? NotFound() : Ok(_mapper.Map<ProjectDto>(p));
+        var p = await repo.GetByIdAsync(id);
+        return p is null ? NotFound() : Ok(mapper.Map<ProjectDto>(p));
     }
 
 
     [HttpPost]
     public async Task<ActionResult<ProjectDto>> Create(ProjectDto dto)
     {
-        var entity = _mapper.Map<Project>(dto);
-        await _repo.AddAsync(entity);
-        return CreatedAtAction(nameof(Get), new { id = entity.P_No }, _mapper.Map<ProjectDto>(entity));
+        var entity = mapper.Map<Project>(dto);
+        await repo.AddAsync(entity);
+        return CreatedAtAction(nameof(Get), new { id = entity.P_No }, mapper.Map<ProjectDto>(entity));
     }
 
 
@@ -42,8 +38,8 @@ public class ProjectController(IGenericRepository<Project> repo, IMapper mapper)
     public async Task<IActionResult> Update(int id, ProjectDto dto)
     {
         if (id != dto.P_No) return BadRequest();
-        var entity = _mapper.Map<Project>(dto);
-        await _repo.UpdateAsync(entity);
+        var entity = mapper.Map<Project>(dto);
+        await repo.UpdateAsync(entity);
         return NoContent();
     }
 
@@ -51,7 +47,7 @@ public class ProjectController(IGenericRepository<Project> repo, IMapper mapper)
     [HttpDelete("{id:int}")]
     public async Task<IActionResult> Delete(int id)
     {
-        await _repo.DeleteAsync(id);
+        await repo.DeleteAsync(id);
         return NoContent();
     }
 }
