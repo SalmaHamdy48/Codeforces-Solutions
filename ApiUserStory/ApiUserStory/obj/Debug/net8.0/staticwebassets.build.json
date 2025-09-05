@@ -1,0 +1,19 @@
+{
+  "Version": 1,
+  "Hash": "idi1ovgaiJDdhFNV3g7pOp4n8L3ITI2ZWvkHpx+tREg=",
+  "Source": "ApiUserStory",
+  "BasePath": "_content/ApiUserStory",
+  "Mode": "Default",
+  "ManifestType": "Build",
+  "ReferencedProjectsConfiguration": [],
+  "DiscoveryPatterns": [
+    {
+      "Name": "ApiUserStory\\wwwroot",
+      "Source": "ApiUserStory",
+      "ContentRoot": "C:\\Users\\SH\\RiderProjects\\ApiUserStory\\ApiUserStory\\wwwroot\\",
+      "BasePath": "_content/ApiUserStory",
+      "Pattern": "**"
+    }
+  ],
+  "Assets": []
+}
