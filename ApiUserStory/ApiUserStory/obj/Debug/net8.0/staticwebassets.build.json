@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "idi1ovgaiJDdhFNV3g7pOp4n8L3ITI2ZWvkHpx+tREg=",
+  "Hash": "rP9lCMbHuABzLNu6CjzEhS6pcWmI2p+6BL2Yj4pTJSQ=",
   "Source": "ApiUserStory",
   "BasePath": "_content/ApiUserStory",
   "Mode": "Default",
@@ -15,5 +15,25 @@
       "Pattern": "**"
     }
   ],
-  "Assets": []
+  "Assets": [
+    {
+      "Identity": "C:\\Users\\SH\\RiderProjects\\ApiUserStory\\ApiUserStory\\wwwroot\\uploads\\b0e099a9-0625-44f3-ab93-0f73f054c042_Screenshot 2025-09-05 100624.png",
+      "SourceId": "ApiUserStory",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\SH\\RiderProjects\\ApiUserStory\\ApiUserStory\\wwwroot\\",
+      "BasePath": "_content/ApiUserStory",
+      "RelativePath": "uploads/b0e099a9-0625-44f3-ab93-0f73f054c042_Screenshot 2025-09-05 100624.png",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "PreferTarget",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\uploads\\b0e099a9-0625-44f3-ab93-0f73f054c042_Screenshot 2025-09-05 100624.png"
+    }
+  ]
 }

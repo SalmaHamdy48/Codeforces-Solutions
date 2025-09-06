@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using ApiUserStory.Data;
 using ApiUserStory.Models;
+using ApiUserStory.Repositories;
 
 namespace ApiUserStory.Controllers
 {
@@ -9,44 +9,38 @@ namespace ApiUserStory.Controllers
     [Route("api/[controller]")]
     public class ProductController : ControllerBase
     {
-        private readonly ApplicationDbContext _context;
+        private readonly IProductRepository _repo;
 
-        public ProductController(ApplicationDbContext context)
+        public ProductController(IProductRepository repo)
         {
-            _context = context;
+            _repo = repo;
         }
 
         [HttpPost]
         [Authorize(Roles = "ProductCreator")]
         public IActionResult CreateProduct(Product product)
         {
-            product.IsApproved = false;
-            _context.Products.Add(product);
-            _context.SaveChanges();
-
-            return Ok(ApiResult<Product>.SuccessResult(product, "Product created successfully"));
+            var created = _repo.CreateProduct(product);
+            return Ok(ApiResult<Product>.SuccessResult("Product created successfully",created));
         }
 
         [HttpPost("{id}/approve")]
         [Authorize(Roles = "Admin")]
         public IActionResult ApproveProduct(int id)
         {
-            var product = _context.Products.Find(id);
+            var product = _repo.ApproveProduct(id);
             if (product == null) 
                 return NotFound(ApiResult<string>.Failure("Product not found"));
 
-            product.IsApproved = true;
-            _context.SaveChanges();
-
-            return Ok(ApiResult<Product>.SuccessResult(product, "Product approved successfully"));
+            return Ok(ApiResult<Product>.SuccessResult("Product approved successfully",product));
         }
 
         [HttpGet]
         [Authorize(Roles = "User")]
         public IActionResult GetApprovedProducts()
         {
-            var products = _context.Products.Where(p => p.IsApproved).ToList();
-            return Ok(ApiResult<List<Product>>.SuccessResult(products, "Approved products fetched"));
+            var products = _repo.GetApprovedProducts();
+            return Ok(ApiResult<List<Product>>.SuccessResult("Approved products fetched",products));
         }
     }
 }

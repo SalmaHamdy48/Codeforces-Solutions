@@ -1,0 +1,25 @@
+{
+  "Files": [
+    {
+      "Id": "C:\\Users\\SH\\RiderProjects\\ApiUserStory\\ApiUserStory\\wwwroot\\uploads\\b0e099a9-0625-44f3-ab93-0f73f054c042_Screenshot 2025-09-05 100624.png",
+      "PackagePath": "staticwebassets\\uploads\\b0e099a9-0625-44f3-ab93-0f73f054c042_Screenshot 2025-09-05 100624.png"
+    },
+    {
+      "Id": "obj\\Debug\\net8.0\\staticwebassets\\msbuild.ApiUserStory.Microsoft.AspNetCore.StaticWebAssets.props",
+      "PackagePath": "build\\Microsoft.AspNetCore.StaticWebAssets.props"
+    },
+    {
+      "Id": "obj\\Debug\\net8.0\\staticwebassets\\msbuild.build.ApiUserStory.props",
+      "PackagePath": "build\\ApiUserStory.props"
+    },
+    {
+      "Id": "obj\\Debug\\net8.0\\staticwebassets\\msbuild.buildMultiTargeting.ApiUserStory.props",
+      "PackagePath": "buildMultiTargeting\\ApiUserStory.props"
+    },
+    {
+      "Id": "obj\\Debug\\net8.0\\staticwebassets\\msbuild.buildTransitive.ApiUserStory.props",
+      "PackagePath": "buildTransitive\\ApiUserStory.props"
+    }
+  ],
+  "ElementsToRemove": []
+}

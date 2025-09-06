@@ -1,6 +1,6 @@
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using ApiUserStory.Models;
+using ApiUserStory.Repositories;
 
 namespace ApiUserStory.Controllers
 {
@@ -8,31 +8,46 @@ namespace ApiUserStory.Controllers
     [Route("api/[controller]")]
     public class AuthController : ControllerBase
     {
-        private readonly UserManager<ApplicationUser> _userManager;
-        private readonly RoleManager<IdentityRole> _roleManager;
+        private readonly IAuthRepository _authRepository;
 
-        public AuthController(UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManager)
+        public AuthController(IAuthRepository authRepository)
         {
-            _userManager = userManager;
-            _roleManager = roleManager;
+            _authRepository = authRepository;
         }
 
         [HttpPost("register")]
-        public async Task<IActionResult> Register(string username, string password, string role)
+        public async Task<IActionResult> Register(string username, string password, string role, string email)
         {
-            var user = new ApplicationUser { UserName = username, Email = $"{username}@test.com" };
-            var result = await _userManager.CreateAsync(user, password);
+            var result = await _authRepository.RegisterAsync(username, password, role, email);
+            return result.Success ? Ok(result) : BadRequest(result);
+        }
 
-            if (!result.Succeeded)
-                return BadRequest(ApiResult<string>.Failure("Registration failed: " +
-                    string.Join(", ", result.Errors.Select(e => e.Description))));
+        [HttpPost("verify-email")]
+        public async Task<IActionResult> VerifyEmail(string email, string otp)
+        {
+            var result = await _authRepository.VerifyEmailAsync(email, otp);
+            return result.Success ? Ok(result) : BadRequest(result);
+        }
 
-            if (!await _roleManager.RoleExistsAsync(role))
-                await _roleManager.CreateAsync(new IdentityRole(role));
+        [HttpPost("forget-password")]
+        public async Task<IActionResult> ForgetPassword(string email)
+        {
+            var result = await _authRepository.SendForgetPasswordOtpAsync(email);
+            return result.Success ? Ok(result) : BadRequest(result);
+        }
 
-            await _userManager.AddToRoleAsync(user, role);
+        [HttpPost("verify-forget-password")]
+        public async Task<IActionResult> VerifyForgetPassword(string email, string otp)
+        {
+            var result = await _authRepository.VerifyForgetPasswordAsync(email, otp);
+            return result.Success ? Ok(result) : BadRequest(result);
+        }
 
-            return Ok(ApiResult<string>.SuccessResult("User registered successfully", "Registration done"));
+        [HttpPost("change-password")]
+        public async Task<IActionResult> ChangePassword(string sessionId, string newPassword)
+        {
+            var result = await _authRepository.ChangePasswordAsync(sessionId, newPassword);
+            return result.Success ? Ok(result) : BadRequest(result);
         }
     }
 }

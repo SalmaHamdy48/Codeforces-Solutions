@@ -1,8 +1,7 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using ApiUserStory.Data;
 using ApiUserStory.Models;
-
+using ApiUserStory.Repositories;
 
 namespace ApiUserStory.Controllers
 {
@@ -10,26 +9,22 @@ namespace ApiUserStory.Controllers
     [Route("api/[controller]")]
     public class CartController : ControllerBase
     {
-        private readonly ApplicationDbContext _context;
+        private readonly ICartRepository _repo;
 
-        public CartController(ApplicationDbContext context)
+        public CartController(ICartRepository repo)
         {
-            _context = context;
+            _repo = repo;
         }
 
         [HttpPost("{productId}")]
         [Authorize(Roles = "User")]
         public IActionResult AddToCart(int productId, string userId)
         {
-            var product = _context.Products.FirstOrDefault(p => p.Id == productId && p.IsApproved);
-            if (product == null) 
+            var item = _repo.AddToCart(productId, userId);
+            if (item == null)
                 return BadRequest(ApiResult<string>.Failure("Product not found or not approved"));
 
-            var cartItem = new CartItem { UserId = userId, ProductId = productId };
-            _context.CartItems.Add(cartItem);
-            _context.SaveChanges();
-
-            return Ok(ApiResult<CartItem>.SuccessResult(cartItem, "Added to cart"));
+            return Ok(ApiResult<CartItem>.SuccessResult("Added to cart", item));
         }
     }
 }

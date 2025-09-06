@@ -1,28 +1,16 @@
-namespace ApiUserStory.Models
+public class ApiResult<T>
 {
-    public class ApiResult<T>
+    public bool Success { get; set; }
+    public string Message { get; set; } = "";
+    public T? Data { get; set; }
+
+    public static ApiResult<T> SuccessResult(string message, T? data = default)
     {
-        public bool Success { get; set; }
-        public string Message { get; set; } = "";
-        public T? Data { get; set; }
+        return new ApiResult<T> { Success = true, Message = message, Data = data };
+    }
 
-        public static ApiResult<T> SuccessResult(T data, string message = "")
-        {
-            return new ApiResult<T>
-            {
-                Success = true,
-                Data = data,
-                Message = message
-            };
-        }
-
-        public static ApiResult<T> Failure(string message)
-        {
-            return new ApiResult<T>
-            {
-                Success = false,
-                Message = message
-            };
-        }
+    public static ApiResult<T> Failure(string message)
+    {
+        return new ApiResult<T> { Success = false, Message = message };
     }
 }
