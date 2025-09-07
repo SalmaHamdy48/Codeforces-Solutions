@@ -9,20 +9,24 @@ namespace ApiUserStory.Services
     public class AuthService : IAuthService
     {
         private readonly UserManager<ApplicationUser> _userManager;
+        private readonly EmailService _emailService;
 
-        public AuthService(UserManager<ApplicationUser> userManager)
+        public AuthService(UserManager<ApplicationUser> userManager, EmailService emailService)
         {
             _userManager = userManager;
+            _emailService = emailService;
         }
 
         public async Task SendEmailConfirmationOtp(ApplicationUser user)
         {
             var random = new Random();
             var otp = random.Next(100000, 999999).ToString();
-            Console.ForegroundColor = ConsoleColor.Green;
-            Console.WriteLine($"[OTP] Email: {user.Email}, Code: {otp}");
-            Console.ResetColor();
-            await Task.CompletedTask;
+
+            await _emailService.SendEmailAsync(
+                user.Email,
+                "Email Confirmation OTP",
+                $"Your OTP is: {otp}"
+            );
         }
 
         public async Task<ApiResult<string>> VerifyEmailAsync(string email, string otp)
@@ -34,9 +38,13 @@ namespace ApiUserStory.Services
         {
             var random = new Random();
             var otp = random.Next(100000, 999999).ToString();
-            Console.ForegroundColor = ConsoleColor.Yellow;
-            Console.WriteLine($"[ForgetPassword OTP] Email: {email}, Code: {otp}");
-            Console.ResetColor();
+
+            await _emailService.SendEmailAsync(
+                email,
+                "Forget Password OTP",
+                $"Your OTP for password reset is: {otp}"
+            );
+
             return ApiResult<string>.SuccessResult("Forget password OTP sent");
         }
 
@@ -47,8 +55,10 @@ namespace ApiUserStory.Services
                 Email = email,
                 Expiration = DateTime.UtcNow.AddMinutes(5)
             };
+
             var json = JsonSerializer.Serialize(sessionObject);
             var sessionId = Convert.ToBase64String(Encoding.UTF8.GetBytes(json));
+
             return ApiResult<string>.SuccessResult(sessionId);
         }
 
@@ -58,6 +68,7 @@ namespace ApiUserStory.Services
             {
                 var json = Encoding.UTF8.GetString(Convert.FromBase64String(sessionId));
                 var session = JsonSerializer.Deserialize<SessionData>(json);
+
                 if (session == null || session.Expiration < DateTime.UtcNow)
                     return ApiResult<string>.Failure("Session expired");
 
