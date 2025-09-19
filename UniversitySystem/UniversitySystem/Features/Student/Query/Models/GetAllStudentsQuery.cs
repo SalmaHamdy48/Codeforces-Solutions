@@ -1,10 +1,13 @@
+using Azure;
 using MediatR;
-using System.Collections.Generic;
-using UniversitySystem.Features.Student.Query.Models;
+using UniversitySystem.Global;
+using Response = UniversitySystem.Global.Response;
 
-namespace UniversitySystem.Features.Student.Query.Handlers
+namespace UniversitySystem.Features.Student.Query.Models
 {
-    public class GetAllStudentsQuery : IRequest<IEnumerable<StudentListResponseDto>>
+    public class GetAllStudentsQuery : IRequest<Response>
     {
+        public int? Page { get; set; } = 1;
+        public int? PageSize { get; set; } = 10;
     }
 }

@@ -1,15 +1,16 @@
+
 using AutoMapper;
 using UniversitySystem.Features.Course.Command.Models;
-using UniversitySystem.Features.Course.Query.Models;
 using UniversitySystem.Models;
 
-namespace UniversitySystem.Mapper;
-
-public class CourseProfile : Profile
+namespace UniversitySystem.Mapper
 {
-    public CourseProfile()
+    public class CourseProfile : Profile
     {
-        CreateMap<CreateCourseDto, Course>();
-        CreateMap<Course, CourseResponseDto>();
+        public CourseProfile()
+        {
+            CreateMap<CreateCourseDto, Course>().ReverseMap();
+            CreateMap<UpdateCourseDto, Course>().ReverseMap();
+        }
     }
 }

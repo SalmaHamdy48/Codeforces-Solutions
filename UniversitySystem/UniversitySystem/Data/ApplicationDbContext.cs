@@ -6,14 +6,17 @@ namespace UniversitySystem.Data;
 
 public class ApplicationDbContext : DbContext
 {
-    public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options) { }
+    public ApplicationDbContext(DbContextOptions<ApplicationDbContext> dbContextOptions) : base(dbContextOptions)
+    {
+    }
     public DbSet<Student> Students { get; set; }
     public DbSet<Course> Courses { get; set; }
-
+    
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        modelBuilder.ApplyConfiguration(new StudentConfiguration());
-        modelBuilder.ApplyConfiguration(new CourseConfiguration());
         base.OnModelCreating(modelBuilder);
+        
+        modelBuilder.ApplyConfiguration(new StudentConfiguration());
+       
     }
 }

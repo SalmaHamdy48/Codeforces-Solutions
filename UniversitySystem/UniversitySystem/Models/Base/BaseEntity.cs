@@ -1,6 +1,10 @@
-namespace UniversitySystem.Models.Base;
+using System.ComponentModel.DataAnnotations;
 
-public abstract class BaseEntity
+namespace UniversitySystem.Models.Base
 {
-    public int Id { get; set; }
+    public class BaseEntity
+    {
+        [Key]
+        public int Id { get; set; }
+    }
 }

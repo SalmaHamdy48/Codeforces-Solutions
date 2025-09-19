@@ -1,41 +1,64 @@
+// Controllers/StudentController.cs
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using UniversitySystem.Features.Student.Command.Models;
-using UniversitySystem.Features.Student.Query.Handlers;
 using UniversitySystem.Features.Student.Query.Models;
+using UniversitySystem.Global;
 
 namespace UniversitySystem.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    public class StudentController : ControllerBase
+    public class StudentController : BaseController
     {
-        private readonly IMediator _mediator;
-        public StudentController(IMediator mediator) => _mediator = mediator;
-
-        [HttpPost]
-        public async Task<IActionResult> Create(CreateStudentDto command) => Ok(await _mediator.Send(command));
+        [HttpGet]
+        public async Task<IActionResult> All([FromQuery] int pageIndex = 1, [FromQuery] int pageSize = 10)
+        {
+            var query = new GetAllStudentsQuery 
+            { 
+                Page = pageIndex, 
+                PageSize = pageSize 
+            };
+            var result = await Mediator.Send(query);
+            return Result(result);
+        }
 
         [HttpGet("{id}")]
         public async Task<IActionResult> GetById(int id)
         {
-            var result = await _mediator.Send(new GetStudentByIdQuery { Id = id });
-            return result != null ? Ok(result) : NotFound("Student not found");
+            var query = new GetStudentByIdQuery { Id = id };
+            var result = await Mediator.Send(query);
+            return Result(result);
         }
 
-        [HttpGet]
-        public async Task<IActionResult> GetAll() => Ok(await _mediator.Send(new GetAllStudentsQuery()));
+        [HttpPost]
+        public async Task<IActionResult> Create([FromBody] CreateStudentDto studentDto)
+        {
+            var result = await Mediator.Send(studentDto);
+            
+            if (result.Status)
+            {
+                var createdId = ((dynamic)result.Data)?.Id;
+                return CreatedAtAction(nameof(GetById), new { id = createdId }, result);
+            }
+            
+            return Result(result);
+        }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> Update(int id, UpdateStudentDto command)
+        public async Task<IActionResult> Update(int id, [FromBody] UpdateStudentDto updateStudentDto)
         {
-            if (id != command.Id) return BadRequest("ID mismatch");
-            var result = await _mediator.Send(command);
-            return result != null ? Ok(result) : NotFound("Student not found");
+            updateStudentDto.Id = id;
+            var result = await Mediator.Send(updateStudentDto);
+            return Result(result);
         }
 
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(int id)
-            => await _mediator.Send(new DeleteStudentDto { Id = id }) ? Ok("Deleted") : NotFound("Student not found");
+        {
+            var command = new DeleteStudentDto { Id = id };
+            var result = await Mediator.Send(command);
+            return Result(result);
+        }
     }
 }

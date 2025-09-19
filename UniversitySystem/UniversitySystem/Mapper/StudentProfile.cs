@@ -9,12 +9,8 @@ namespace UniversitySystem.Mapper
     {
         public StudentProfile()
         {
-           
-            CreateMap<Student, StudentListResponseDto>();
-            
-         
-            CreateMap<CreateStudentDto, Student>();
-            CreateMap<UpdateStudentDto, Student>();
+            CreateMap<CreateStudentDto, Student>().ReverseMap();
+            CreateMap<UpdateStudentDto, Student>().ReverseMap();
         }
     }
 }

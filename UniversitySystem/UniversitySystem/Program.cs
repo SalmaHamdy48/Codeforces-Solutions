@@ -1,53 +1,71 @@
-using Microsoft.EntityFrameworkCore;
-using UniversitySystem.Data;
-using UniversitySystem.Repositories.Interfaces;
-using UniversitySystem.Repositories.Implementations;
+// Program.cs
+
+using System.Reflection;
 using FluentValidation;
 using MediatR;
-using UniversitySystem.Features.Course.Command.Handlers;
-using UniversitySystem.Features.Student.Command.Handlers;
+using Microsoft.EntityFrameworkCore;
+using UniversitySystem.Behaviour;
+using UniversitySystem.Data;
+using UniversitySystem.Features.Course.Command.Validators;
+using UniversitySystem.Features.Student.Command.Validators;
 using UniversitySystem.Middleware;
+using UniversitySystem.Repositories.Implementations;
+using UniversitySystem.Repositories.Interfaces;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// -------------------- DbContext --------------------
+// -------------------- Add Services --------------------
+
+// 1. Controllers & Swagger
+builder.Services.AddControllers();
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen();
+
+// 2. Database Context
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
-// -------------------- Repositories --------------------
+// 3. Repositories
 builder.Services.AddScoped<ICourseRepository, CourseRepository>();
 builder.Services.AddScoped<IStudentRepository, StudentRepository>();
 builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
 
-// -------------------- AutoMapper --------------------
+// 4. AutoMapper
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
-// -------------------- FluentValidation --------------------
+// 5. MediatR
+builder.Services.AddMediatR(Assembly.GetExecutingAssembly());
+
+// 6. FluentValidation
 builder.Services.AddValidatorsFromAssemblyContaining<Program>();
 
-// -------------------- MediatR --------------------
-builder.Services.AddMediatR(AppDomain.CurrentDomain.GetAssemblies());
+// 7. Scoped Validators (DbContext dependent)
+builder.Services.AddScoped<CreateStudentValidator>();
+builder.Services.AddScoped<UpdateStudentValidator>();
+builder.Services.AddScoped<DeleteStudentValidator>();
+builder.Services.AddScoped<CreateCourseValidator>();
+builder.Services.AddScoped<UpdateCourseValidator>();
+builder.Services.AddScoped<DeleteCourseValidator>();
 
-// -------------------- Handlers (for Controllers without MediatR) --------------------
-builder.Services.AddScoped<CreateCourseHandler>();
-builder.Services.AddScoped<UpdateCourseHandler>();
-builder.Services.AddScoped<DeleteCourseHandler>();
+// 8. Validation Behaviour (MediatR Pipeline)
+builder.Services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehaviour<,>));
 
-builder.Services.AddScoped<CreateStudentHandler>();
-builder.Services.AddScoped<UpdateStudentHandler>();
-builder.Services.AddScoped<DeleteStudentHandler>();
+// 9. CORS (optional - for frontend)
+builder.Services.AddCors(options =>
+{
+    options.AddDefaultPolicy(policy =>
+    {
+        policy.AllowAnyOrigin()
+              .AllowAnyMethod()
+              .AllowAnyHeader();
+    });
+});
 
-// -------------------- Controllers --------------------
-builder.Services.AddControllers();
-
-// -------------------- Middleware --------------------
-builder.Services.AddCors(); // إذا احتجتي
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
-
+// -------------------- Build App --------------------
 var app = builder.Build();
 
-// -------------------- Middleware pipeline --------------------
+// -------------------- Configure Pipeline --------------------
+
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
@@ -55,10 +73,13 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
-app.UseAuthorization();
 
-// Exception middleware
+// ✅ Use YOUR ExceptionMiddleware
 app.UseMiddleware<ExceptionMiddleware>();
+
+app.UseCors();
+
+app.UseAuthorization();
 
 app.MapControllers();
 

@@ -1,22 +1,64 @@
+
 using AutoMapper;
+using MediatR;
+using UniversitySystem.Data;
 using UniversitySystem.Features.Student.Command.Models;
-using UniversitySystem.Repositories.Interfaces;
+using UniversitySystem.Global;
 using UniversitySystem.Models;
+using System.Net;
+using Response = UniversitySystem.Global.Response;
 
 namespace UniversitySystem.Features.Student.Command.Handlers
 {
-    public class UpdateStudentHandler(IStudentRepository repo, IMapper mapper)
+    public class UpdateStudentHandler : IRequestHandler<UpdateStudentDto, Response>
     {
-        public async Task<UniversitySystem.Models.Student> Handle(UpdateStudentDto dto)
+        private readonly ApplicationDbContext _context;
+        private readonly IMapper _mapper;
+
+        public UpdateStudentHandler(ApplicationDbContext context, IMapper mapper)
         {
-            var student = await repo.GetByIdAsync(dto.Id);
-            if (student == null)
-                throw new Exception("Student not found");
+            _context = context;
+            _mapper = mapper;
+        }
 
-            mapper.Map(dto, student);
-            await repo.UpdateAsync(student);
+        public async Task<Response> Handle(UpdateStudentDto request, CancellationToken cancellationToken)
+        {
+            try
+            {
+                var existingStudent = await _context.Students.FindAsync(request.Id);
+                if (existingStudent == null)
+                {
+                    return Response.ErrorResponse(
+                        $"Student with ID {request.Id} not found",
+                        statusCode: HttpStatusCode.NotFound
+                    );
+                }
 
-            return student;
+                _mapper.Map(request, existingStudent);
+                await _context.SaveChangesAsync(cancellationToken);
+
+                var responseData = new
+                {
+                    Id = existingStudent.Id,
+                    Sname = existingStudent.Sname,
+                    Age = existingStudent.Age,
+                    Message = "Student updated successfully"
+                };
+
+                return Response.SuccessResponse(
+                    responseData,
+                    "Student updated successfully",
+                    HttpStatusCode.OK
+                );
+            }
+            catch (Exception ex)
+            {
+                return Response.ErrorResponse(
+                    "Failed to update student",
+                    new List<string> { ex.Message },
+                    HttpStatusCode.InternalServerError
+                );
+            }
         }
     }
 }

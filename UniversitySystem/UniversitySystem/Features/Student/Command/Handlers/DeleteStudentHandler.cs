@@ -1,26 +1,59 @@
+
 using MediatR;
+using UniversitySystem.Data;
 using UniversitySystem.Features.Student.Command.Models;
-using UniversitySystem.Repositories.Interfaces;
+using UniversitySystem.Global;
+using UniversitySystem.Models;
+using System.Net;
+using Response = UniversitySystem.Global.Response;
 
 namespace UniversitySystem.Features.Student.Command.Handlers
 {
-    public class DeleteStudentHandler : IRequestHandler<DeleteStudentDto, bool>
+    public class DeleteStudentHandler : IRequestHandler<DeleteStudentDto, Response>
     {
-        private readonly IStudentRepository _repo;
+        private readonly ApplicationDbContext _context;
 
-        public DeleteStudentHandler(IStudentRepository repo)
+        public DeleteStudentHandler(ApplicationDbContext context)
         {
-            _repo = repo;
+            _context = context;
         }
 
-        public async Task<bool> Handle(DeleteStudentDto request, CancellationToken cancellationToken)
+        public async Task<Response> Handle(DeleteStudentDto request, CancellationToken cancellationToken)
         {
-            var student = await _repo.GetByIdAsync(request.Id);
-            if (student == null)
-                return false;
+            try
+            {
+                var student = await _context.Students.FindAsync(request.Id);
+                if (student == null)
+                {
+                    return Response.ErrorResponse(
+                        "Student not found",
+                        statusCode: HttpStatusCode.NotFound
+                    );
+                }
 
-            await _repo.DeleteAsync(student);
-            return true;
+                _context.Students.Remove(student);
+                await _context.SaveChangesAsync(cancellationToken);
+
+                var responseData = new
+                {
+                    Id = request.Id,
+                    Message = "Student deleted successfully"
+                };
+
+                return Response.SuccessResponse(
+                    responseData,
+                    "Student deleted successfully",
+                    HttpStatusCode.OK
+                );
+            }
+            catch (Exception ex)
+            {
+                return Response.ErrorResponse(
+                    "Failed to delete student",
+                    new List<string> { ex.Message },
+                    HttpStatusCode.InternalServerError
+                );
+            }
         }
     }
 }

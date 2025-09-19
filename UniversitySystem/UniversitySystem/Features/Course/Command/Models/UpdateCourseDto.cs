@@ -1,8 +1,15 @@
-namespace UniversitySystem.Features.Course.Command.Models;
 
-public class UpdateCourseDto
+
+using UniversitySystem.Global;
+using MediatR;
+
+namespace UniversitySystem.Features.Course.Command.Models
 {
-    public int Id { get; set; }
-    public string Cname { get; set; }
-    public int Hours { get; set; }
+    public class UpdateCourseDto : IRequest<Response>
+    {
+        public int Id { get; set; }
+        public string Code { get; set; } = string.Empty;
+        public string Cname { get; set; } = string.Empty;
+        public int Hours { get; set; }
+    }
 }
