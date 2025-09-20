@@ -19,7 +19,7 @@ namespace UniversitySystem.Controllers
                 Page = pageIndex, 
                 PageSize = pageSize 
             };
-            var result = await Mediator.Send(query);
+            var result = await mediator.Send(query);
             return Result(result);
         }
 
@@ -27,29 +27,27 @@ namespace UniversitySystem.Controllers
         public async Task<IActionResult> GetById(int id)
         {
             var query = new GetStudentByIdQuery { Id = id };
-            var result = await Mediator.Send(query);
+            var result = await mediator.Send(query);
             return Result(result);
         }
 
         [HttpPost]
         public async Task<IActionResult> Create([FromBody] CreateStudentDto studentDto)
         {
-            var result = await Mediator.Send(studentDto);
-            
-            if (result.Status)
-            {
-                var createdId = ((dynamic)result.Data)?.Id;
-                return CreatedAtAction(nameof(GetById), new { id = createdId }, result);
-            }
-            
+            var result = await mediator.Send(studentDto);
             return Result(result);
         }
 
         [HttpPut("{id}")]
         public async Task<IActionResult> Update(int id, [FromBody] UpdateStudentDto updateStudentDto)
         {
-            updateStudentDto.Id = id;
-            var result = await Mediator.Send(updateStudentDto);
+            var UpdateDto = new UpdateStudentDto
+            {
+                Id = id,
+                Sname = updateStudentDto.Sname,
+                Age = updateStudentDto.Age
+            };
+            var result = await mediator.Send(updateStudentDto);
             return Result(result);
         }
 
@@ -57,7 +55,7 @@ namespace UniversitySystem.Controllers
         public async Task<IActionResult> Delete(int id)
         {
             var command = new DeleteStudentDto { Id = id };
-            var result = await Mediator.Send(command);
+            var result = await mediator.Send(command);
             return Result(result);
         }
     }

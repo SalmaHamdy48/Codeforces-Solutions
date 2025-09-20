@@ -11,59 +11,56 @@ namespace UniversitySystem.Repositories.Implementations
     public class StudentRepository(ApplicationDbContext context) 
         : GenericRepository<Student>(context), IStudentRepository
     {
-        // ✅ Basic CRUD - Delegate to GenericRepository
+        
         public async Task<IEnumerable<Student>> GetAllAsync()
             => await base.GetAllAsync();
 
         public async Task<Student?> GetByIdAsync(int id)
             => await base.GetByIdAsync(id);
+        public async Task<Student> AddAsync(Student student, CancellationToken cancellationToken = default)
+            => await base.AddAsync(student, cancellationToken);
 
-        public async Task AddAsync(Student student)
-            => await base.AddAsync(student);
+        public async Task<Student> UpdateAsync(Student student, CancellationToken cancellationToken = default)
+            => await base.UpdateAsync(student, cancellationToken);
 
-        public async Task UpdateAsync(Student student)
-            => await base.UpdateAsync(student);
+        public async Task DeleteAsync(Student student, CancellationToken cancellationToken = default)
+            => await base.DeleteAsync(student, cancellationToken);
 
-        public async Task DeleteAsync(Student student)
-            => await base.DeleteAsync(student);
+        public async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
+            => await base.SaveChangesAsync(cancellationToken);
+        
+        public async Task<Student?> GetSingleAsync(ISpecification<Student> spec, CancellationToken cancellationToken = default)
+            => await base.GetSingleAsync(spec, cancellationToken);
 
-        public async Task SaveChangesAsync()
-            => await base.SaveChangesAsync();
+        public async Task<IEnumerable<Student>> GetListAsync(ISpecification<Student> spec, CancellationToken cancellationToken)
+            => await base.GetListAsync(spec, cancellationToken);
 
-        // ✅ Specification-based methods - Delegate to GenericRepository
-        public async Task<Student?> GetSingleAsync(ISpecification<Student> spec)
-            => await base.GetSingleAsync(spec);
+        public async Task<int> CountAsync(ISpecification<Student> spec, CancellationToken cancellationToken)
+            => await base.CountAsync(spec, cancellationToken);
 
-        public async Task<IEnumerable<Student>> GetListAsync(ISpecification<Student> spec)
-            => await base.GetListAsync(spec);
-
-        public async Task<int> CountAsync(ISpecification<Student> spec)
-            => await base.CountAsync(spec);
-
-        // ✅ Your custom methods
-        public async Task<Student?> GetStudentWithCoursesAsync(int studentId)
+        public async Task<Student?> GetStudentWithCoursesAsync(int studentId, CancellationToken cancellationToken = default)
         {
             var spec = new StudentWithCoursesSpecification(studentId);
-            return await GetSingleAsync(spec);
+            return await GetSingleAsync(spec, cancellationToken);
         }
 
-        public async Task<IEnumerable<Student>> GetStudentsByAgeRangeAsync(int minAge, int maxAge)
+        public async Task<IEnumerable<Student>> GetStudentsByAgeRangeAsync(int minAge, int maxAge, CancellationToken cancellationToken = default)
         {
             var spec = new StudentByAgeRangeSpecification(minAge, maxAge);
-            return await GetListAsync(spec);
+            return await GetListAsync(spec, cancellationToken);
         }
 
-        public async Task<int> GetStudentEnrollmentCountAsync(int studentId)
+        public async Task<int> GetStudentEnrollmentCountAsync(int studentId, CancellationToken cancellationToken = default)
         {
             var spec = new StudentSpecification(studentId);
-            var student = await GetSingleAsync(spec);
+            var student = await GetSingleAsync(spec, cancellationToken);
             return student?.StudentCourses?.Count ?? 0;
         }
 
-        public async Task<IEnumerable<Student>> GetStudentsWithMinimumCoursesAsync(int minCourses)
+        public async Task<IEnumerable<Student>> GetStudentsWithMinimumCoursesAsync(int minCourses, CancellationToken cancellationToken = default)
         {
             var spec = new StudentWithMinimumCoursesSpecification(minCourses);
-            return await GetListAsync(spec);
+            return await GetListAsync(spec, cancellationToken);
         }
     }
 }

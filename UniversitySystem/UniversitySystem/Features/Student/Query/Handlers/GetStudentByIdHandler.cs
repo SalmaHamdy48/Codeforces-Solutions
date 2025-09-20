@@ -9,20 +9,11 @@ using Response = UniversitySystem.Global.Response;
 
 namespace UniversitySystem.Features.Student.Query.Handlers
 {
-    public class GetStudentByIdHandler : IRequestHandler<GetStudentByIdQuery, Response>
+    public class GetStudentByIdHandler(ApplicationDbContext context) : IRequestHandler<GetStudentByIdQuery, Response>
     {
-        private readonly ApplicationDbContext _context;
-
-        public GetStudentByIdHandler(ApplicationDbContext context)
-        {
-            _context = context;
-        }
-
         public async Task<Response> Handle(GetStudentByIdQuery request, CancellationToken cancellationToken)
         {
-            try
-            {
-                var student = await _context.Students
+                var student = await context.Students
                     .Include(s => s.StudentCourses)
                     .ThenInclude(sc => sc.Course)
                     .Where(s => s.Id == request.Id)
@@ -60,15 +51,6 @@ namespace UniversitySystem.Features.Student.Query.Handlers
                     "Student retrieved successfully",
                     HttpStatusCode.OK
                 );
-            }
-            catch (Exception ex)
-            {
-                return Response.ErrorResponse(
-                    "Failed to retrieve student",
-                    new List<string> { ex.Message },
-                    HttpStatusCode.InternalServerError
-                );
-            }
         }
     }
 }

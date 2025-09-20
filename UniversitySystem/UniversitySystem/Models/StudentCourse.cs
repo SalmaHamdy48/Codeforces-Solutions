@@ -1,7 +1,6 @@
-using UniversitySystem.Models;
 using UniversitySystem.Models.Base;
 
-namespace  University.Models;
+namespace  UniversitySystem.Models;
 
 public class StudentCourse : BaseEntity
 {

@@ -11,6 +11,17 @@ namespace UniversitySystem.Specifications
         {
         }
     }
+    
+    public class CourseCodeExistsSpecification : BaseSpecification<Course>
+    {
+        public CourseCodeExistsSpecification(string code, int? excludeId = null)
+            : base(excludeId.HasValue 
+                ? c => c.Code == code && c.Id != excludeId.Value
+                : c => c.Code == code)
+        {
+        }
+    }
+    
 
     public class CourseWithStudentsSpecification : BaseSpecification<Course>
     {

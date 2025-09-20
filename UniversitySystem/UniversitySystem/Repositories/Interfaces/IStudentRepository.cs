@@ -1,4 +1,4 @@
-// Repositories/Interfaces/IStudentRepository.cs
+
 using UniversitySystem.Models;
 using UniversitySystem.Repositories.Interfaces;
 using UniversitySystem.Specifications;
@@ -10,17 +10,16 @@ namespace UniversitySystem.Repositories.Interfaces
     {
         Task<IEnumerable<Student>> GetAllAsync();
         Task<Student?> GetByIdAsync(int id);
-        Task AddAsync(Student student);
-        Task UpdateAsync(Student student);
-        Task DeleteAsync(Student student);
-        Task SaveChangesAsync();
-        Task<Student?> GetSingleAsync(ISpecification<Student> spec);
-        Task<IEnumerable<Student>> GetListAsync(ISpecification<Student> spec);
-        Task<int> CountAsync(ISpecification<Student> spec);
-
-        Task<Student?> GetStudentWithCoursesAsync(int studentId);
-        Task<IEnumerable<Student>> GetStudentsByAgeRangeAsync(int minAge, int maxAge);
-        Task<int> GetStudentEnrollmentCountAsync(int studentId);
-        Task<IEnumerable<Student>> GetStudentsWithMinimumCoursesAsync(int minCourses);
+        Task<Student> AddAsync(Student student, CancellationToken cancellationToken = default);
+        Task<Student> UpdateAsync(Student student, CancellationToken cancellationToken = default);
+        Task DeleteAsync(Student student, CancellationToken cancellationToken = default);
+        Task<int> SaveChangesAsync(CancellationToken cancellationToken = default);
+        Task<Student?> GetSingleAsync(ISpecification<Student> spec, CancellationToken cancellationToken = default);
+        Task<IEnumerable<Student>> GetListAsync(ISpecification<Student> spec, CancellationToken cancellationToken = default);
+        Task<int> CountAsync(ISpecification<Student> spec, CancellationToken cancellationToken = default);
+        Task<Student?> GetStudentWithCoursesAsync(int studentId, CancellationToken cancellationToken = default);
+        Task<IEnumerable<Student>> GetStudentsByAgeRangeAsync(int minAge, int maxAge, CancellationToken cancellationToken = default);
+        Task<int> GetStudentEnrollmentCountAsync(int studentId, CancellationToken cancellationToken = default);
+        Task<IEnumerable<Student>> GetStudentsWithMinimumCoursesAsync(int minCourses, CancellationToken cancellationToken = default);
     }
 }

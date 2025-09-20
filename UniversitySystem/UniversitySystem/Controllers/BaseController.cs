@@ -9,7 +9,7 @@ namespace UniversitySystem.Controllers
     [ApiController]
     public class BaseController : ControllerBase
     {
-        protected IMediator Mediator => _mediator ??= HttpContext.RequestServices.GetRequiredService<IMediator>();
+        protected IMediator mediator => _mediator ??= HttpContext.RequestServices.GetRequiredService<IMediator>();
         private IMediator? _mediator;
 
         protected IActionResult Result(Response response)

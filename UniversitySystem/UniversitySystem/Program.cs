@@ -1,4 +1,3 @@
-// Program.cs
 
 using System.Reflection;
 using FluentValidation;
@@ -11,6 +10,7 @@ using UniversitySystem.Features.Student.Command.Validators;
 using UniversitySystem.Middleware;
 using UniversitySystem.Repositories.Implementations;
 using UniversitySystem.Repositories.Interfaces;
+using UniversitySystem.Features.Course.Command.Handlers;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -33,8 +33,11 @@ builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepositor
 // 4. AutoMapper
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
-// 5. MediatR
-builder.Services.AddMediatR(Assembly.GetExecutingAssembly());
+// 5. MediatR// 5. MediatR
+builder.Services.AddMediatR(
+    typeof(CreateCourseHandler).Assembly,
+    Assembly.GetExecutingAssembly());
+
 
 // 6. FluentValidation
 builder.Services.AddValidatorsFromAssemblyContaining<Program>();
@@ -47,10 +50,10 @@ builder.Services.AddScoped<CreateCourseValidator>();
 builder.Services.AddScoped<UpdateCourseValidator>();
 builder.Services.AddScoped<DeleteCourseValidator>();
 
-// 8. Validation Behaviour (MediatR Pipeline)
+
 builder.Services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehaviour<,>));
 
-// 9. CORS (optional - for frontend)
+
 builder.Services.AddCors(options =>
 {
     options.AddDefaultPolicy(policy =>
@@ -74,7 +77,6 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
-// ✅ Use YOUR ExceptionMiddleware
 app.UseMiddleware<ExceptionMiddleware>();
 
 app.UseCors();

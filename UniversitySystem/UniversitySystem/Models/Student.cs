@@ -1,4 +1,3 @@
-using University.Models;
 using UniversitySystem.Models.Base;
 
 namespace UniversitySystem.Models;
