@@ -1,0 +1,15 @@
+D:\Planning\Session 28\Project\Project.Application\bin\Debug\net8.0\Project.Application.deps.json
+D:\Planning\Session 28\Project\Project.Application\bin\Debug\net8.0\Project.Application.dll
+D:\Planning\Session 28\Project\Project.Application\bin\Debug\net8.0\Project.Application.pdb
+D:\Planning\Session 28\Project\Project.Application\bin\Debug\net8.0\Project.Domain.dll
+D:\Planning\Session 28\Project\Project.Application\bin\Debug\net8.0\Project.Domain.pdb
+D:\Planning\Session 28\Project\Project.Application\obj\Debug\net8.0\Project.Application.csproj.AssemblyReference.cache
+D:\Planning\Session 28\Project\Project.Application\obj\Debug\net8.0\Project.Application.GeneratedMSBuildEditorConfig.editorconfig
+D:\Planning\Session 28\Project\Project.Application\obj\Debug\net8.0\Project.Application.AssemblyInfoInputs.cache
+D:\Planning\Session 28\Project\Project.Application\obj\Debug\net8.0\Project.Application.AssemblyInfo.cs
+D:\Planning\Session 28\Project\Project.Application\obj\Debug\net8.0\Project.Application.csproj.CoreCompileInputs.cache
+D:\Planning\Session 28\Project\Project.Application\obj\Debug\net8.0\Project..E365C10A.Up2Date
+D:\Planning\Session 28\Project\Project.Application\obj\Debug\net8.0\Project.Application.dll
+D:\Planning\Session 28\Project\Project.Application\obj\Debug\net8.0\refint\Project.Application.dll
+D:\Planning\Session 28\Project\Project.Application\obj\Debug\net8.0\Project.Application.pdb
+D:\Planning\Session 28\Project\Project.Application\obj\Debug\net8.0\ref\Project.Application.dll

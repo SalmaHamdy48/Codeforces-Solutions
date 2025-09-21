@@ -1,0 +1,11 @@
+D:\Planning\Session 28\Project\Project.Domain\bin\Debug\net8.0\Project.Domain.deps.json
+D:\Planning\Session 28\Project\Project.Domain\bin\Debug\net8.0\Project.Domain.dll
+D:\Planning\Session 28\Project\Project.Domain\bin\Debug\net8.0\Project.Domain.pdb
+D:\Planning\Session 28\Project\Project.Domain\obj\Debug\net8.0\Project.Domain.GeneratedMSBuildEditorConfig.editorconfig
+D:\Planning\Session 28\Project\Project.Domain\obj\Debug\net8.0\Project.Domain.AssemblyInfoInputs.cache
+D:\Planning\Session 28\Project\Project.Domain\obj\Debug\net8.0\Project.Domain.AssemblyInfo.cs
+D:\Planning\Session 28\Project\Project.Domain\obj\Debug\net8.0\Project.Domain.csproj.CoreCompileInputs.cache
+D:\Planning\Session 28\Project\Project.Domain\obj\Debug\net8.0\Project.Domain.dll
+D:\Planning\Session 28\Project\Project.Domain\obj\Debug\net8.0\refint\Project.Domain.dll
+D:\Planning\Session 28\Project\Project.Domain\obj\Debug\net8.0\Project.Domain.pdb
+D:\Planning\Session 28\Project\Project.Domain\obj\Debug\net8.0\ref\Project.Domain.dll
