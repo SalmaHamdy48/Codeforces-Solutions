@@ -1,23 +1,31 @@
-
 using Microsoft.EntityFrameworkCore;
 using UniversitySystem.Data;
 using UniversitySystem.Models;
 using UniversitySystem.Repositories.Interfaces;
 using UniversitySystem.Specifications;
+using System.Collections.Generic;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace UniversitySystem.Repositories.Implementations
 {
-    public class CourseRepository(ApplicationDbContext context) 
-        : GenericRepository<Course>(context), ICourseRepository
+    public class CourseRepository : GenericRepository<Course>, ICourseRepository
     {
+        private readonly ApplicationDbContext _context;
+
+        public CourseRepository(ApplicationDbContext context) : base(context)
+        {
+            _context = context;
+        }
+
         public async Task<IEnumerable<Course>> GetAllAsync(CancellationToken ct = default)
             => await base.GetAllAsync(ct);
 
-        public async Task<Course?> GetByCodeAsync(string code, CancellationToken ct = default)
-            => await base.GetByCodeAsync(code, ct);
-
         public async Task<Course?> GetByIdAsync(int id, CancellationToken ct = default)
             => await base.GetByIdAsync(id, ct);
+
+        public async Task<Course?> GetByCodeAsync(string code, CancellationToken ct = default)
+            => await _context.Courses.FirstOrDefaultAsync(c => c.Code == code, ct);
 
         public async Task<Course> AddAsync(Course course, CancellationToken ct = default)
             => await base.AddAsync(course, ct);

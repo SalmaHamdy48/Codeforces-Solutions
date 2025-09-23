@@ -3,8 +3,8 @@ using MediatR;
 
 namespace UniversitySystem.Features.Course.Command.Models
 {
-    public class DeleteCourseDto : IRequest<Response>
+    public class DeleteCourseDto(int id) : IRequest<Response>
     {
-        public int Id { get; set; }
+        public int Id { get; set; } = id;
     }
 }

@@ -3,6 +3,7 @@ using AutoMapper;
 using UniversitySystem.Features.Course.Command.Models;
 using UniversitySystem.Models;
 using UniversitySystem.Features.Course.Query.Models;
+using UniversitySystem.Features.Student.Command.Models;
 
 namespace UniversitySystem.Mapper
 {
@@ -13,20 +14,11 @@ namespace UniversitySystem.Mapper
             
             CreateMap<CreateCourseDto, Course>().ReverseMap();
             CreateMap<UpdateCourseDto, Course>().ReverseMap();
+            CreateMap<Course, GetAllCoursesQuery>().ReverseMap();
+            CreateMap<Student, CreateStudentDto>().ReverseMap();
             
             
-            CreateMap<Course, object>()
-                .ForMember("Id", opt => opt.MapFrom(src => src.Id))
-                .ForMember("Code", opt => opt.MapFrom(src => src.Code))
-                .ForMember("Cname", opt => opt.MapFrom(src => src.Cname))
-                .ForMember("Hours", opt => opt.MapFrom(src => src.Hours))
-                .ForMember("EnrolledStudents", opt => opt.MapFrom(src => 
-                    src.StudentCourses.Select(sc => new
-                    {
-                        StudentId = sc.StudentId,
-                        Sname = sc.Student.Sname,
-                        Age = sc.Student.Age
-                    }).ToList()));
+            
         }
     }
 }

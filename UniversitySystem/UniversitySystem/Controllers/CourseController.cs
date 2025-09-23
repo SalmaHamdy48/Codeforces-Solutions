@@ -21,39 +21,36 @@ namespace UniversitySystem.Controllers
                 PageSize = pageSize 
             };
             var result = await mediator.Send(query);
-            return Result(result);
+            return Ok(result);
         }
 
         [HttpGet("{id}")] 
         public async Task<IActionResult> GetById(int id)
         {
-            var query = new GetCourseByIdQuery { Id = id };
-            var result = await mediator.Send(query);
-            return Result(result);
+            var result = await mediator.Send(new GetCourseByIdQuery(id));
+            return Ok(result);
         }
 
         [HttpPost]
         public async Task<IActionResult> Create([FromBody] CreateCourseDto courseDto)
         {
             var result = await mediator.Send(courseDto);
-            return Result(result);
+            return Ok(result);
         }
         
-        [HttpPut("{id}")]
-        public async Task<IActionResult> Update(int id, [FromBody] UpdateCourseDto updateCourseDto)
+        [HttpPut(Router.CourseRouter.Main)]
+        public async Task<IActionResult> Update([FromBody] UpdateCourseDto updateCourseDto)
         {
-            updateCourseDto.Id = id;
             var result = await mediator.Send(updateCourseDto);
-            return Result(result);
+            return Ok(result);
         }
 
 
-        [HttpDelete("{id}")]
+        [HttpDelete(Router.CourseRouter.MainId)]
         public async Task<IActionResult> Delete(int id)
         {
-            var command = new DeleteCourseDto { Id = id };
-            var result = await mediator.Send(command);
-            return Result(result);
+            var result = await mediator.Send(new DeleteCourseDto(id));
+            return Ok(result);
         }
     }
 }

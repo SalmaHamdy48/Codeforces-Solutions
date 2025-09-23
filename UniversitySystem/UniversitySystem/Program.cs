@@ -1,16 +1,15 @@
-
 using System.Reflection;
 using FluentValidation;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using UniversitySystem.Behaviour;
 using UniversitySystem.Data;
+using UniversitySystem.Features.Course.Command.Handlers;
 using UniversitySystem.Features.Course.Command.Validators;
 using UniversitySystem.Features.Student.Command.Validators;
 using UniversitySystem.Middleware;
 using UniversitySystem.Repositories.Implementations;
 using UniversitySystem.Repositories.Interfaces;
-using UniversitySystem.Features.Course.Command.Handlers;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -23,7 +22,9 @@ builder.Services.AddSwaggerGen();
 
 // 2. Database Context
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+    options.UseSqlServer(
+        builder.Configuration.GetConnectionString("DefaultConnection")
+    ));
 
 // 3. Repositories
 builder.Services.AddScoped<ICourseRepository, CourseRepository>();
@@ -33,16 +34,17 @@ builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepositor
 // 4. AutoMapper
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
-// 5. MediatR// 5. MediatR
-builder.Services.AddMediatR(
-    typeof(CreateCourseHandler).Assembly,
-    Assembly.GetExecutingAssembly());
-
+// 5. MediatR (v12 syntax → لازم cfg.RegisterServicesFromAssembly)
+builder.Services.AddMediatR(cfg =>
+{
+    cfg.RegisterServicesFromAssembly(typeof(CreateCourseHandler).Assembly);
+    cfg.RegisterServicesFromAssembly(Assembly.GetExecutingAssembly());
+});
 
 // 6. FluentValidation
 builder.Services.AddValidatorsFromAssemblyContaining<Program>();
 
-// 7. Scoped Validators (DbContext dependent)
+// 7. Scoped Validators (لو فيها DbContext)
 builder.Services.AddScoped<CreateStudentValidator>();
 builder.Services.AddScoped<UpdateStudentValidator>();
 builder.Services.AddScoped<DeleteStudentValidator>();
@@ -50,10 +52,10 @@ builder.Services.AddScoped<CreateCourseValidator>();
 builder.Services.AddScoped<UpdateCourseValidator>();
 builder.Services.AddScoped<DeleteCourseValidator>();
 
-
+// 8. Pipeline Behaviour
 builder.Services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehaviour<,>));
 
-
+// 9. CORS
 builder.Services.AddCors(options =>
 {
     options.AddDefaultPolicy(policy =>

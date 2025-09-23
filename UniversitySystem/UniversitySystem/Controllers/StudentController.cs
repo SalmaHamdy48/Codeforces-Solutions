@@ -1,6 +1,7 @@
 // Controllers/StudentController.cs
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using UniversitySystem.AppMetaData.BaseRouter;
 using UniversitySystem.Features.Student.Command.Models;
 using UniversitySystem.Features.Student.Query.Models;
 using UniversitySystem.Global;
@@ -23,36 +24,33 @@ namespace UniversitySystem.Controllers
             return Result(result);
         }
 
-        [HttpGet("{id}")]
+        [HttpGet(Router.StudentRouter.MainId)]
         public async Task<IActionResult> GetById(int id)
         {
-            var query = new GetStudentByIdQuery { Id = id };
-            var result = await mediator.Send(query);
-            return Result(result);
+            var result = await mediator.Send(new GetStudentByIdQuery(id));
+            return Ok(result);
         }
 
         [HttpPost]
         public async Task<IActionResult> Create([FromBody] CreateStudentDto studentDto)
         {
             var result = await mediator.Send(studentDto);
-            return Result(result);
+            return Ok(result);
         }
 
-        [HttpPut("{id}")]
-        public async Task<IActionResult> Update(int id, [FromBody] UpdateStudentDto updateStudentDto)
+        [HttpPut(Router.StudentRouter.Main)]
+        public async Task<IActionResult> Update( [FromBody] UpdateStudentDto updateStudentDto)
         {
-            updateStudentDto.Id = id;
             var result = await mediator.Send(updateStudentDto);
-            return Result(result);
+            return Ok(result);
         }
 
 
-        [HttpDelete("{id}")]
+        [HttpDelete(Router.StudentRouter.MainId)]
         public async Task<IActionResult> Delete(int id)
         {
-            var command = new DeleteStudentDto { Id = id };
-            var result = await mediator.Send(command);
-            return Result(result);
+            var result = await mediator.Send(new DeleteStudentDto(id));
+            return Ok(result);
         }
     }
 }
