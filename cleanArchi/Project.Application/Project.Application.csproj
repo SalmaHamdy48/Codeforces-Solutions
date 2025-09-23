@@ -20,10 +20,4 @@
       <ProjectReference Include="..\Project.Domain\Project.Domain.csproj" />
     </ItemGroup>
 
-    <ItemGroup>
-      <Folder Include="Features\Categories\Dtos\" />
-      <Folder Include="Features\Categories\Queries\" />
-      <Folder Include="Features\Categories\Specifications\" />
-    </ItemGroup>
-
 </Project>

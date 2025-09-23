@@ -1027,19 +1027,19 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\Mahmoud Abdelkawi\\.nuget\\packages\\": {}
+    "C:\\Users\\SH\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "D:\\Planning\\Session 28\\Project\\Project.Application\\Project.Application.csproj",
+      "projectUniqueName": "C:\\Users\\SH\\Downloads\\Project\\Project\\Project.Application\\Project.Application.csproj",
       "projectName": "Project.Application",
-      "projectPath": "D:\\Planning\\Session 28\\Project\\Project.Application\\Project.Application.csproj",
-      "packagesPath": "C:\\Users\\Mahmoud Abdelkawi\\.nuget\\packages\\",
-      "outputPath": "D:\\Planning\\Session 28\\Project\\Project.Application\\obj\\",
+      "projectPath": "C:\\Users\\SH\\Downloads\\Project\\Project\\Project.Application\\Project.Application.csproj",
+      "packagesPath": "C:\\Users\\SH\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\SH\\Downloads\\Project\\Project\\Project.Application\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "C:\\Users\\Mahmoud Abdelkawi\\AppData\\Roaming\\NuGet\\NuGet.Config"
+        "C:\\Users\\SH\\AppData\\Roaming\\NuGet\\NuGet.Config"
       ],
       "originalTargetFrameworks": [
         "net8.0"
@@ -1051,8 +1051,8 @@
         "net8.0": {
           "targetAlias": "net8.0",
           "projectReferences": {
-            "D:\\Planning\\Session 28\\Project\\Project.Domain\\Project.Domain.csproj": {
-              "projectPath": "D:\\Planning\\Session 28\\Project\\Project.Domain\\Project.Domain.csproj"
+            "C:\\Users\\SH\\Downloads\\Project\\Project\\Project.Domain\\Project.Domain.csproj": {
+              "projectPath": "C:\\Users\\SH\\Downloads\\Project\\Project\\Project.Domain\\Project.Domain.csproj"
             }
           }
         }
@@ -1117,7 +1117,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.411/PortableRuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Users\\SH\\.dotnet\\sdk\\8.0.413/PortableRuntimeIdentifierGraph.json"
       }
     }
   },
