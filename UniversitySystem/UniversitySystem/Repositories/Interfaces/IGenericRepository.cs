@@ -8,6 +8,7 @@ namespace UniversitySystem.Repositories.Interfaces
     {
 
         Task<T?> GetByIdAsync(int id, CancellationToken ct = default);
+        Task<T?> GetByCodeAsync(string code, CancellationToken ct = default);
 
         Task<IReadOnlyList<T>> GetAllAsync(CancellationToken ct = default);
 

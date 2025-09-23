@@ -13,6 +13,9 @@ namespace UniversitySystem.Repositories.Implementations
         public async Task<IEnumerable<Course>> GetAllAsync(CancellationToken ct = default)
             => await base.GetAllAsync(ct);
 
+        public async Task<Course?> GetByCodeAsync(string code, CancellationToken ct = default)
+            => await base.GetByCodeAsync(code, ct);
+
         public async Task<Course?> GetByIdAsync(int id, CancellationToken ct = default)
             => await base.GetByIdAsync(id, ct);
 

@@ -11,6 +11,8 @@ namespace UniversitySystem.Repositories.Interfaces
         
         Task<IEnumerable<Course>> GetAllAsync(CancellationToken ct = default);
         Task<Course?> GetByIdAsync(int id, CancellationToken ct = default);
+        Task<Course?> GetByCodeAsync(string code, CancellationToken ct = default);
+        
         Task<Course> AddAsync(Course course, CancellationToken ct = default); 
         Task<Course> UpdateAsync(Course course, CancellationToken ct = default); 
         Task DeleteAsync(Course course, CancellationToken ct = default); 

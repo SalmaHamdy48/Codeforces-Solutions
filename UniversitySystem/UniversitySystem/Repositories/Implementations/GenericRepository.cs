@@ -13,6 +13,9 @@ namespace UniversitySystem.Repositories.Implementations
         public async Task<T?> GetByIdAsync(int id, CancellationToken ct = default)
             => await _dbSet.FindAsync(new object[] { id }, ct);
 
+        public async Task<T?> GetByCodeAsync(string code, CancellationToken ct = default)
+            => await _dbSet.FindAsync(new object[] { code }, ct);
+
         public async Task<IReadOnlyList<T>> GetAllAsync(CancellationToken ct = default)
             => await _dbSet.ToListAsync(ct);
 

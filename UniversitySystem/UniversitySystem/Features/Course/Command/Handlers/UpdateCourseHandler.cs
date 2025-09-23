@@ -1,61 +1,48 @@
 using AutoMapper;
 using MediatR;
-using UniversitySystem.Data;
-using UniversitySystem.Features.Course.Command.Models;
+using UniversitySystem.Features.Course.Command.Models; 
 using UniversitySystem.Global;
-using UniversitySystem.Models;
 using UniversitySystem.Repositories.Interfaces;
-using UniversitySystem.Specifications;
-using System.Net;
-using Response = UniversitySystem.Global.Response;
 
-namespace UniversitySystem.Features.Course.Command.Handlers
+
+namespace UniversitySystem.Features.Course.Command.Handler
 {
-    public class UpdateCourseHandler(ICourseRepository courseRepository, IMapper mapper)
-        : IRequestHandler<UpdateCourseDto, Response>
+    public class UpdateCourseHandler : IRequestHandler<UpdateCourseDto, Response>
     {
+        private readonly IMapper _mapper;
+        private readonly ICourseRepository _courseRepository;
+
+        public UpdateCourseHandler(ICourseRepository courseRepository, IMapper mapper)
+        {
+            _courseRepository = courseRepository;
+            _mapper = mapper;
+        }
+
         public async Task<Response> Handle(UpdateCourseDto request, CancellationToken cancellationToken)
         {
-            var spec = new CourseSpecification(request.Id);
-            var existingCourse = await courseRepository.GetSingleAsync(spec, cancellationToken);
+            var course = await _courseRepository.GetByIdAsync(request.Id);
 
-            if (existingCourse == null)
+            if (course == null)
             {
-                return Response.ErrorResponse(
-                    $"Course with ID {request.Id} not found",
-                    statusCode: HttpStatusCode.NotFound
-                );
+                return new Response
+                {
+                    Message = $"Course with ID {request.Id} not found",
+                    Status = false,
+                    StatusCode = System.Net.HttpStatusCode.NotFound
+                };
             }
-
-            var codeSpec = new CourseCodeExistsSpecification(request.Code, request.Id);
-            var codeExists = await courseRepository.CountAsync(codeSpec, cancellationToken) > 0;
-
-            if (codeExists)
-            {
-                return Response.ErrorResponse(
-                    $"Course code '{request.Code}' already exists. Please use a unique code.",
-                    statusCode: HttpStatusCode.Conflict
-                );
-            }
-
-            mapper.Map(request, existingCourse);
-
-            var updatedCourse = await courseRepository.UpdateAsync(existingCourse, cancellationToken);
             
-            var responseData = new
+            _mapper.Map(request, course);
+            
+            await _courseRepository.UpdateAsync(course, cancellationToken);
+            return new Response
             {
-                Id = updatedCourse.Id,
-                Code = updatedCourse.Code,
-                Cname = updatedCourse.Cname,
-                Hours = updatedCourse.Hours,
-                Message = "Course updated successfully"
+                Data = course,
+                Message = "Course updated successfully",
+                Status = true,
+                StatusCode = System.Net.HttpStatusCode.OK
             };
-
-            return Response.SuccessResponse(
-                responseData,
-                "Course updated successfully",
-                HttpStatusCode.OK
-            );
         }
+
     }
 }

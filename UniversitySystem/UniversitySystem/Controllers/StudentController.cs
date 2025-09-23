@@ -41,15 +41,11 @@ namespace UniversitySystem.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> Update(int id, [FromBody] UpdateStudentDto updateStudentDto)
         {
-            var UpdateDto = new UpdateStudentDto
-            {
-                Id = id,
-                Sname = updateStudentDto.Sname,
-                Age = updateStudentDto.Age
-            };
+            updateStudentDto.Id = id;
             var result = await mediator.Send(updateStudentDto);
             return Result(result);
         }
+
 
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(int id)
