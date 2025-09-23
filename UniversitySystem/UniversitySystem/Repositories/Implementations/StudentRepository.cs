@@ -17,6 +17,9 @@ namespace UniversitySystem.Repositories.Implementations
 
         public async Task<Student?> GetByIdAsync(int id)
             => await base.GetByIdAsync(id);
+        
+        public async Task<Student?> GetByIdAsync(int id, CancellationToken ct = default)
+            => await base.GetByIdAsync(id, ct);
         public async Task<Student> AddAsync(Student student, CancellationToken cancellationToken = default)
             => await base.AddAsync(student, cancellationToken);
 

@@ -6,6 +6,8 @@ using UniversitySystem.Global;
 using UniversitySystem.Repositories.Interfaces;
 using UniversitySystem.Specifications;
 using System.Net;
+using UniversitySystem.Features.Course.Command.Models;
+using UniversitySystem.Features.Student.Command.Models;
 using Response = UniversitySystem.Global.Response;
 
 namespace UniversitySystem.Features.Course.Query.Handlers
@@ -25,8 +27,7 @@ namespace UniversitySystem.Features.Course.Query.Handlers
                     statusCode: HttpStatusCode.NotFound
                 );
             }
-            
-            var courseData = mapper.Map<object>(course);
+            var courseData = mapper.Map<CourseDto>(course);
 
             var responseData = new
             {

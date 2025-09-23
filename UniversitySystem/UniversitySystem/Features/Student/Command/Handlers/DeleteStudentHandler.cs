@@ -1,8 +1,7 @@
+using AutoMapper;
 using MediatR;
-using UniversitySystem.Data;
 using UniversitySystem.Features.Student.Command.Models;
 using UniversitySystem.Global;
-using UniversitySystem.Models;
 using UniversitySystem.Repositories.Interfaces;
 using UniversitySystem.Specifications;
 using System.Net;
@@ -10,7 +9,7 @@ using Response = UniversitySystem.Global.Response;
 
 namespace UniversitySystem.Features.Student.Command.Handlers
 {
-    public class DeleteStudentHandler(IStudentRepository studentRepository)
+    public class DeleteStudentHandler(IStudentRepository studentRepository, IMapper mapper)
         : IRequestHandler<DeleteStudentDto, Response>
     {
         public async Task<Response> Handle(DeleteStudentDto request, CancellationToken cancellationToken)
@@ -28,11 +27,7 @@ namespace UniversitySystem.Features.Student.Command.Handlers
 
             await studentRepository.DeleteAsync(student, cancellationToken);
 
-            var responseData = new
-            {
-                Id = request.Id,
-                Message = "Student deleted successfully"
-            };
+            var responseData = mapper.Map<object>(student);
 
             return Response.SuccessResponse(
                 responseData,

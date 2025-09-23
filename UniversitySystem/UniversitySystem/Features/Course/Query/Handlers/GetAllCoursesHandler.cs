@@ -1,11 +1,12 @@
 using AutoMapper;
 using MediatR;
-using UniversitySystem.Data;
 using UniversitySystem.Features.Course.Query.Models;
 using UniversitySystem.Global;
 using UniversitySystem.Repositories.Interfaces;
 using UniversitySystem.Specifications;
 using System.Net;
+using UniversitySystem.Features.Course.Command.Models;
+using UniversitySystem.Features.Student.Command.Models;
 using Response = UniversitySystem.Global.Response;
 
 namespace UniversitySystem.Features.Course.Query.Handlers
@@ -22,10 +23,9 @@ namespace UniversitySystem.Features.Course.Query.Handlers
             var spec = new AllCoursesSpecification(skip, pageSize);
             var courses = await courseRepository.GetListAsync(spec, cancellationToken);
 
-            var countSpec = new AllCoursesSpecification();
-            var totalCount = await courseRepository.CountAsync(countSpec, cancellationToken);
+            var totalCount = await courseRepository.CountAsync(new AllCoursesSpecification(), cancellationToken);
 
-            var coursesData = mapper.Map<List<object>>(courses);
+            var coursesData = mapper.Map<List<CourseDto>>(courses);
 
             var responseData = new
             {

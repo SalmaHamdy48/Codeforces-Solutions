@@ -10,6 +10,8 @@ namespace UniversitySystem.Repositories.Interfaces
     {
         Task<IEnumerable<Student>> GetAllAsync();
         Task<Student?> GetByIdAsync(int id);
+        Task<Student?> GetByIdAsync(int id, CancellationToken ct = default);
+            
         Task<Student> AddAsync(Student student, CancellationToken cancellationToken = default);
         Task<Student> UpdateAsync(Student student, CancellationToken cancellationToken = default);
         Task DeleteAsync(Student student, CancellationToken cancellationToken = default);

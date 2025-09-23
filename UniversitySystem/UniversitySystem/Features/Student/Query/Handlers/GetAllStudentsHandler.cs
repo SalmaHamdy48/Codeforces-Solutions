@@ -1,19 +1,26 @@
 using MediatR;
-using Microsoft.EntityFrameworkCore;
-using UniversitySystem.Data;
 using UniversitySystem.Features.Student.Query.Models;
 using UniversitySystem.Global;
 using UniversitySystem.Repositories.Interfaces;
 using UniversitySystem.Specifications;
 using System.Net;
-using Response = UniversitySystem.Global.Response;
 using AutoMapper;
+using UniversitySystem.Features.Student.Command.Models;
+using Response = UniversitySystem.Global.Response;
 
 namespace UniversitySystem.Features.Student.Query.Handlers
 {
-    public class GetAllStudentsHandler(IStudentRepository studentRepository)
-        : IRequestHandler<GetAllStudentsQuery, Response>
+    public class GetAllStudentsHandler : IRequestHandler<GetAllStudentsQuery, Response>
     {
+        private readonly IStudentRepository _studentRepository;
+        private readonly IMapper _mapper;
+
+        public GetAllStudentsHandler(IStudentRepository studentRepository, IMapper mapper)
+        {
+            _studentRepository = studentRepository;
+            _mapper = mapper;
+        }
+
         public async Task<Response> Handle(GetAllStudentsQuery request, CancellationToken cancellationToken)
         {
             var page = Math.Max(1, request.Page ?? 1);
@@ -21,27 +28,15 @@ namespace UniversitySystem.Features.Student.Query.Handlers
             var skip = (page - 1) * pageSize;
 
             var spec = new AllStudentsSpecification(skip, pageSize);
-            var students = await studentRepository.GetListAsync(spec, cancellationToken);
+            var students = await _studentRepository.GetListAsync(spec, cancellationToken);
 
-            var countSpec = new AllStudentsSpecification();
-            var totalCount = await studentRepository.CountAsync(countSpec, cancellationToken);
+            var totalCount = await _studentRepository.CountAsync(new AllStudentsSpecification(), cancellationToken);
+
+            var studentsData = _mapper.Map<List<StudentDto>>(students);
 
             var responseData = new
             {
-                Students = students.Select(s => new
-                {
-                    s.Id,
-                    s.Sname,
-                    s.Age,
-                    EnrolledCoursesCount = s.StudentCourses?.Count ?? 0,
-                    EnrolledCourses = s.StudentCourses?.Select(sc => new
-                    {
-                        sc.CourseId,
-                        sc.Course?.Code,
-                        sc.Course?.Cname,
-                        sc.Course?.Hours
-                    }) ?? Enumerable.Empty<object>()
-                }),
+                Students = studentsData,
                 Pagination = new
                 {
                     CurrentPage = page,

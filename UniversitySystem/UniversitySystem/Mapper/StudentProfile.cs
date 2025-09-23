@@ -14,8 +14,8 @@ namespace UniversitySystem.Mapper
             
             CreateMap<CreateStudentDto, Student>().ReverseMap();
             CreateMap<UpdateStudentDto, Student>().ReverseMap();
-            CreateMap<Student , GetAllStudentsQuery>().ReverseMap();
             CreateMap<Course  , CreateCourseDto>().ReverseMap();
+            CreateMap<Student, StudentDto>().ReverseMap();
             
         }
     }

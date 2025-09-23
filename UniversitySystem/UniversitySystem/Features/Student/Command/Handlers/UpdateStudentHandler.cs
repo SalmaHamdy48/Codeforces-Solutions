@@ -1,9 +1,7 @@
 using AutoMapper;
 using MediatR;
-using UniversitySystem.Data;
 using UniversitySystem.Features.Student.Command.Models;
 using UniversitySystem.Global;
-using UniversitySystem.Models;
 using UniversitySystem.Repositories.Interfaces;
 using UniversitySystem.Specifications;
 using System.Net;

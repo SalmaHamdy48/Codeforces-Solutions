@@ -1,57 +1,49 @@
 using AutoMapper;
 using MediatR;
-using UniversitySystem.Data;
 using UniversitySystem.Features.Course.Command.Models;
 using UniversitySystem.Global;
-using UniversitySystem.Models;
 using UniversitySystem.Repositories.Interfaces;
-using UniversitySystem.Specifications;
 using System.Net;
 using Response = UniversitySystem.Global.Response;
 
 namespace UniversitySystem.Features.Course.Command.Handlers
 {
-    public class DeleteCourseHandler(ICourseRepository courseRepository) : IRequestHandler<DeleteCourseDto, Response>
+    public class DeleteCourseHandler : IRequestHandler<DeleteCourseDto, Response>
     {
+        private readonly ICourseRepository _courseRepository;
+        private readonly IMapper _mapper;
+
+        public DeleteCourseHandler(ICourseRepository courseRepository, IMapper mapper)
+        {
+            _courseRepository = courseRepository;
+            _mapper = mapper;
+        }
+
         public async Task<Response> Handle(DeleteCourseDto request, CancellationToken cancellationToken)
         {
-            
-            var spec = new CourseWithStudentsSpecification(request.Id);
-            var courseWithEnrollments = await courseRepository.GetSingleAsync(spec, cancellationToken);
+            var course = await _courseRepository.GetByIdAsync(request.Id);
 
-            if (courseWithEnrollments == null)
+            if (course == null)
             {
-                return Response.ErrorResponse(
-                    $"Course with ID {request.Id} not found",
-                    statusCode: HttpStatusCode.NotFound
-                );
+                return new Response
+                {
+                    Message = $"Course with id {request.Id} not found",
+                    Status = false,
+                    StatusCode = HttpStatusCode.NotFound
+                };
             }
 
-            
-            if (courseWithEnrollments.StudentCourses.Any())
-            {
-                var enrolledStudentsCount = courseWithEnrollments.StudentCourses.Count;
-                return Response.ErrorResponse(
-                    $"Cannot delete course with ID {request.Id}. It has {enrolledStudentsCount} enrolled student(s).",
-                    statusCode: HttpStatusCode.BadRequest
-                );
-            }
+            await _courseRepository.DeleteAsync(course, cancellationToken);
 
-            await courseRepository.DeleteAsync(courseWithEnrollments, cancellationToken);
+            var responseData = _mapper.Map<object>(course);
 
-            var responseData = new
+            return new Response
             {
-                Id = request.Id,
-                Code = courseWithEnrollments.Code,
-                Cname = courseWithEnrollments.Cname,
-                Message = "Course deleted successfully"
+                Data = responseData,
+                Message = $"Course with id {request.Id} deleted successfully",
+                Status = true,
+                StatusCode = HttpStatusCode.OK
             };
-
-            return Response.SuccessResponse(
-                responseData,
-                "Course deleted successfully",
-                HttpStatusCode.OK
-            );
         }
     }
 }
